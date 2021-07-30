@@ -1,0 +1,114 @@
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #E0E0E0 !important;
+}
+.user_card {
+    width: 80%;
+    margin-top: auto;
+    margin-bottom: auto;
+    background: #b8bba8;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+
+}
+.form_container {
+    margin-top: 5%;
+}
+
+#form-title{
+    color: #000;
+    font-family: 'Playfair Display';
+}
+.p_content {
+    color: #000;
+    font-family: 'Playfair Display';
+    font-size: large;
+}
+.login_btn {
+    width: 100%;
+    background: #33ccff !important;
+    color: white !important;
+}
+.login_btn:focus {
+    box-shadow: none !important;
+    outline: 0px !important;
+}
+.login_container {
+    padding: 0 2rem;
+}
+.input-group-text {
+    background: #f78c5b !important;
+    color: white !important;
+    border: 0 !important;
+    border-radius: 0.25rem 0 0 0.25rem !important;
+}
+.input_user,
+.input_pass:focus {
+    box-shadow: none !important;
+    outline: 0px !important;
+}
+.error-messages {
+    border-left: 6px solid red;
+    color: red;
+    margin-bottom: 3%;
+    padding-left: 2%;
+    font-family: 'Playfair Display';
+    font-size: large;
+}
+.success-messages {
+    border-left: 6px solid green;
+    color: green;
+    margin-bottom: 3%;
+    padding-left: 2%;
+    font-family: 'Playfair Display';
+    font-size: large;
+}
+span {
+    position: absolute;
+    right: -15px;
+    transform: translate(0, -50%);
+    top: 50%;
+    cursor: pointer;
+}
+.fa {
+    font-size: 20px;
+    color: #7a797e;
+}
+.bottom-link {
+    color: black;
+    font-family: 'Playfair Display';
+    font-size: large;
+}
+.or-container {
+    align-items: center;
+    color: grey;
+    display: flex;
+    margin-top: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+.line-separator {
+    background-color:#a8a7a7;
+    flex-grow: 5;
+    height: 1px;
+}
+.or-label {
+    flex-grow: 1;
+    margin: 0 7%;
+    text-align: center;
+}
+.help-block{
+    color: #ff0000 !important;
+}
+

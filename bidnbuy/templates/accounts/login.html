@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% load socialaccount %}
+{% load materializecss %}
+{% block title %}{% trans 'Login' %}{% endblock title %}
+{% block content %}
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    {% load static %}
+    <script src="{% static 'app.js' %}"></script>
+    <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+</head>
+
+<div class="container h-100">
+{% providers_media_js %} 
+{% get_current_language as LANGUAGE_CODE %}
+    <div class="d-flex justify-content-center h-100">
+        <div class="user_card">
+            <div class="d-flex justify-content-center">
+                <h3 id="form-title">{% trans "Login" %}</h3>
+            </div>
+            <div class="d-flex justify-content-center form_container">
+                <form method="POST" action="" style="width: 80%;">
+                    {% csrf_token %}
+                    {% for message in messages %}
+                        {% if message.tags == "error" %}
+                            <p class="error-messages">
+                                {{message}}
+                                {% if message.message == 'Something unexpected happened.\n' or message.message == 'Email is not verified. Please verify your email. Email not received? Check spam or ' or  message.message == 'A aparut o eroare.\n' or message.message == 'Email-ul nu e verificat. Va rugam sa verificati email-ul. Nu ati primit email-ul? Verificati folder-ul spam sau ' %}
+                                    {% url 'resend_activation' as activationUrl %}
+                                    {% with "<a href='/resend-link'>" as link_begin %}
+                                    {% with "</a>" as link_end %}
+                                    {% blocktrans %}{{ link_begin }} Request a new activation link {{ link_end }}{% endblocktrans %}
+                                    {% endwith %}
+                                    {% endwith %}
+                                {% endif %}
+                            </p>
+                        {% endif %}
+                        {% if message.tags == "success" %}
+                            <p class="success-messages">{{message}}</p>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="input-group mb-3">
+                        {{form.username|materializecss:'icon=person'}}
+                    </div>
+                    <div class="input-group mb-2">
+                        {{form.password1|materializecss:'icon=password'}}
+                        <span><i class="fa fa-eye-slash" id="eye1" onclick="toggle(id)" style="color:black;"></i></span>
+                    </div>
+                    <div class="d-flex justify-content-center mt-3 mb-2 login_container">
+                        <button type='submit' class="waves-effect light btn-large btn-block">{% trans "LOGIN" %} </button>
+                    </div>
+                </form>
+
+            </div>
+            <div class="or-container mb-2">
+                <div class="line-separator"></div>
+                <div class="or-label">{% trans "or" %}</div>
+                <div class="line-separator"></div>
+            </div>
+            <div class="d-flex justify-content-center mt-4 mb-3 login_container" style="text-align:center; margin: 1%;">
+                <a class="btn waves-effect light btn-large btn-google btn-block text-uppercase btn-outline" href="{% provider_login_url "google" %}" style="width: 80%;">
+                    <img src="https://img.icons8.com/color/16/000000/google-logo.png">{% trans "Login with Google" %} 
+                </a>
+            </div><br>
+            <div class="mt-1">
+                <div class="d-flex justify-content-center links mb-2 bottom-link">
+                    {% trans "Don't have an account?" %}<a href="{% url 'register' %}" class="ml-2">{% trans "Sign Up " %}<i class="fa fa-user-plus fa-sm" style="color:black;"></i></a>
+                </div>
+            </div>
+             <div class="mt-1">
+                <div class="d-flex justify-content-center links mb-3 bottom-link">
+                    {% trans " Forgot password?" %}<a href="{% url 'request_new_password' %}" class="ml-2"> {% trans " Reset password " %} <i class="fa fa-key fa-sm" style="color:black;"></i></a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock content %}

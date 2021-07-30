@@ -1,0 +1,15 @@
+{% load i18n %}
+{% autoescape off %}
+{% get_current_language as LANGUAGE_CODE %}
+{% trans "Hi, " %} {{user}}!
+
+{% trans "Please use the link below to verify your account. " %}
+
+http://{{domain}}{% url 'activate' uidb64=uid token=token %}
+
+{% trans "Thanks for using our site!" %}
+
+{% trans "Kind Regards, " %}
+{% trans "Bidder Team"%}
+
+{% endautoescape %}

@@ -1,0 +1,199 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-07-30 02:39+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
+"2:1));\n"
+
+#: templates/accounts/activate.html:4
+msgid "Hi, "
+msgstr "Salut, "
+
+#: templates/accounts/activate.html:6
+msgid "Please use the link below to verify your account. "
+msgstr ""
+"Va rugam sa folositi link-ul de mai jos pentru a verficarea contului "
+"dumneavoastra"
+
+#: templates/accounts/activate.html:10
+#: templates/accounts/password_reset_email.html:12
+msgid "Thanks for using our site!"
+msgstr "Va multumim pentru utilizarea site-ului nostru! "
+
+#: templates/accounts/activate.html:12
+#: templates/accounts/password_reset_email.html:14
+msgid "Kind Regards, "
+msgstr "O zi frumoasa,"
+
+#: templates/accounts/activate.html:13
+#: templates/accounts/password_reset_email.html:15
+msgid "Bidder Team"
+msgstr "Echipa Bidder"
+
+#: templates/accounts/login.html:6 templates/accounts/login.html:21
+#: templates/accounts/register.html:55
+msgid "Login"
+msgstr "Intra in cont"
+
+#: templates/accounts/login.html:34
+#, python-format
+msgid "%(link_begin)s Request a new activation link %(link_end)s"
+msgstr "%(link_begin)s Cereti un nou link de activare %(link_end)s"
+
+#: templates/accounts/login.html:52
+msgid "LOGIN"
+msgstr "AUTENTIFICARE"
+
+#: templates/accounts/login.html:59 templates/accounts/register.html:45
+msgid "or"
+msgstr "sau"
+
+#: templates/accounts/login.html:64
+msgid "Login with Google"
+msgstr "Conectati-va cu Google"
+
+#: templates/accounts/login.html:69
+msgid "Don't have an account?"
+msgstr "Nu aveti un cont?"
+
+#: templates/accounts/login.html:69
+msgid "Sign Up "
+msgstr "Creeaza un cont "
+
+#: templates/accounts/login.html:74
+msgid " Forgot password?"
+msgstr " Ati uitat parola?"
+
+#: templates/accounts/login.html:74
+msgid " Reset password "
+msgstr " Resetati parola "
+
+#: templates/accounts/password_reset_email.html:4
+msgid "Hi"
+msgstr "Salut, "
+
+#: templates/accounts/password_reset_email.html:6
+msgid ""
+"You are receiving this email because you requested a password reset for your "
+"user account, "
+msgstr ""
+"Ati primit acest email deoarece ati solicitat resetarea parolei pentru "
+"contul dumneavoastra de utilizator, "
+
+#: templates/accounts/password_reset_email.html:8
+msgid "Please go to the following page and choose a new password:"
+msgstr "Va rugam sa accesati urmatoarea pagina si alegeti o noua parola:"
+
+#: templates/accounts/register.html:5
+msgid "Register"
+msgstr "Inregistrare"
+
+#: templates/accounts/register.html:16
+msgid "Register Account"
+msgstr "Inregistrare"
+
+#: templates/accounts/register.html:39
+msgid "REGISTER"
+msgstr "Inregistreaza-te"
+
+#: templates/accounts/register.html:50
+msgid "Sign up with Google"
+msgstr "Inregistrati-va cu Google"
+
+#: templates/accounts/register.html:55
+msgid "Already have an account?"
+msgstr "Aveti deja un cont?"
+
+#: templates/accounts/resend_activation.html:6
+#: templates/accounts/resend_activation.html:18
+msgid "New activation link"
+msgstr "Cere un nou link de activare"
+
+#: templates/accounts/resend_activation.html:24
+msgid ""
+"Enter your email address below and we'll email you a new activation link."
+msgstr ""
+"Introduceti email-ul dumneavoastra si va vom trimite un nou link de activare."
+
+#: templates/accounts/resend_activation.html:30
+msgid "Submit"
+msgstr "Trimite"
+
+#: templates/accounts/reset_password_confirm.html:6
+#: templates/accounts/reset_password_confirm.html:20
+msgid "Reset password"
+msgstr " Resetati parola "
+
+#: templates/accounts/reset_password_confirm.html:34
+msgid ""
+"Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr ""
+"Va rugam sa introduceti noua parola de doua ori pentru a putea verifica daca "
+"ati introdus-o corect."
+
+#: templates/accounts/reset_password_confirm.html:45
+msgid "Change my password"
+msgstr "Reseteaza parola"
+
+#: templates/accounts/reset_password_request.html:6
+#: templates/accounts/reset_password_request.html:18
+msgid "Password reset"
+msgstr "Resetare parola"
+
+#: templates/accounts/reset_password_request.html:32
+msgid ""
+"Forgotten password? Enter your email address below and we'll email "
+"instructions for setting a new one."
+msgstr ""
+"Ati uitat parola? Introduceti adresa de email asociata contului "
+"dumneavoastra si va vom trimite instructiuni pentru resetarea parolei."
+
+#: templates/accounts/reset_password_request.html:38
+msgid "Reset my password"
+msgstr " Resetati parola "
+
+#: templates/home.html:3
+msgid "Home"
+msgstr "Acasa"
+
+#: templates/home.html:5
+msgid "Welcome to Bidder!"
+msgstr "Bine ati venit pe site-ul Bidder!"
+
+#: templates/navbar.html:14
+msgid "Language"
+msgstr "Limba"
+
+#: templates/navbar.html:42
+msgid "Logout"
+msgstr "Deconectare"
+
+#~ msgid "English"
+#~ msgstr "Engleza"
+
+#~ msgid "Kind Regards,"
+#~ msgstr "O zi frumoasa,"
+
+#~ msgid "Thanks for using our site! "
+#~ msgstr "Va multumim pentru utilizarea site-ului nostru! "
+
+#~ msgid " Request a new activation link "
+#~ msgstr "Cere un nou link de activare"
+
+#~ msgid "Account with this Email already exists."
+#~ msgstr "Exista deja un cont asociat acestui email."

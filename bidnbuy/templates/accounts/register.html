@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load materializecss %}
+{% load socialaccount %}
+{% block title %}{% trans 'Register' %}{% endblock title %}
+{% block content %}
+<head>
+    {% load static %}
+    <script src="{% static 'app.js' %}"></script>   
+</head>
+<div class="container h-100">
+{% providers_media_js %} 
+    <div class="d-flex justify-content-center h-100">
+        <div class="user_card">
+            <div class="d-flex justify-content-center">
+                <h3 id="form-title">{% trans "Register Account" %}</h3>
+            </div>
+            <div class="d-flex justify-content-center form_container">
+                <form method="POST" action="" style="width: 80%;">
+                    {% csrf_token %}
+                    {% for non_field_error in form.non_field_errors %}
+                        <p class="error-messages">{{non_field_error}}</p>
+                    {% endfor %}
+                    <div class="input-group mb-3">
+                        {{form.username|materializecss:'icon=person'}}<br>
+                    </div>
+                    <div class="input-group mb-3">
+                        {{form.email|materializecss:'icon=email'}}
+                    </div>
+                    <div class="input-group mb-3">
+                        {{form.password1|materializecss:'icon=password'}}
+                        <span><i class="fa fa-eye-slash" id="eye1" onclick="toggle(id)" style="color:black;"></i></span>
+                    </div>
+                    <div class="input-group mb-3">
+                        {{form.password2|materializecss:'icon=password'}}
+                        <span><i class="fa fa-eye-slash" id="eye2" onclick="toggle(id)" style="color:black;"></i></span>
+                    </div>
+                    <div class="d-flex justify-content-center mt-3 login_container">
+                        <button type='submit' class="waves-effect light btn-large btn-block text-uppercase btn-outline">{% trans "REGISTER" %}</button>
+                    </div>
+                </form>
+            </div>
+            <div class="or-container mb-3">
+                <div class="line-separator"></div>
+                <div class="or-label">{% trans "or" %}</div>
+                <div class="line-separator"></div>
+            </div>
+            <div class="d-flex justify-content-center mt-3 mb-3 login_container" style="text-align:center; margin: 1%;">
+                <a class="btn waves-effect light btn-large btn-google btn-block text-uppercase btn-outline" href="{% provider_login_url "google" %}" style="width: 80%;">
+                    <img src="https://img.icons8.com/color/16/000000/google-logo.png"> {% trans "Sign up with Google" %}
+                </a>
+            </div>
+            <div class="mt-4 mb-3">
+                <div class="d-flex justify-content-center links bottom-link">
+                    {% trans "Already have an account?" %} <a href="{% url 'login' %}" class="ml-2">{% trans "Login" %} <i class="fa fa-sign-in" style="color:black;"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
