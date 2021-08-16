@@ -58,6 +58,9 @@ class Account(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return True
     
+    def get_joined_date(self):
+        return self.date_joined.strftime("%d %B %Y")
+    
 
 
 

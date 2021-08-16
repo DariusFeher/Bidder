@@ -1,13 +1,13 @@
 {% load i18n %}
-<body>
+{% comment %} <body>
+    
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-suspend" id="base-navbar">
         <a class="navbar-brand" href="/" style="font-family: 'Lobster', cursive; margin-left: 1%;"> Bidder</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <!-- dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans "Language" %}</a>
+                <ul class="mr-auto">
+                    <li class="nav-item dropdown" style="float:left;">
+                        <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #000;">{% trans "Language" %}</a>
                             <form action="{% url 'set_language' %}" method="post" id="lang_form">
                                 {% csrf_token %}
                                 <input name="next" type="hidden" value="{{ redirect_to }}" />
@@ -31,7 +31,7 @@
                     <!--/ dropdown -->
                 </ul>
                 {% if request.user.is_authenticated %}
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown" style="float: right;">
                             <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"> {{ request.user.username }}</i></a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li>
@@ -47,4 +47,53 @@
     <!--/ navbar -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body> {% endcomment %}
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<ul id="dropdown-user" class="dropdown-content">
+    {% if request.user.is_authenticated %}
+        <li>
+            <a href="{% url 'logout' %}" style="color: black; display: inline; margin:0;">{% trans 'Logout' %}</a>
+        </li>
+    {% endif %}
+</ul>
+<ul id="dropdown-language" class="dropdown-content">
+    <form action="{% url 'set_language' %}" method="post" id="lang_form">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ redirect_to }}" />
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% get_language_info_list for LANGUAGES as languages %}
+        {% for language in languages %}
+        <li>
+            <button type="submit" name="language" value="{{ language.code }}" class="{% if language.code == LANGUAGE_CODE %} selected{% else%} demo-text-black{% endif %} dropdown-item" style="width:100%; height: 50px;">
+                {% if language.code == LANGUAGE_CODE %} &#10003;
+                
+                {% endif %}
+                <img src="/static/img/flags/{{ language.code }}.png">
+                {{ language.name_translated }}
+            </button>
+        </li>
+        {% endfor %}
+    </form>
+</ul>
+
+<nav class="white">
+   <div class="nav-wrapper">
+        <a href="/" class="brand-logo" style="font-family: 'Lobster', cursive; margin-left: 1%; color: black;"> Bidder</a>
+        <ul class="right hide-on-med-and-down">
+            <li style="height: 100%;"><a href="/products/new" class="waves-effect waves-light btn teal" style="top:25%; color: white;">{% trans "CREATE NEW AD" %}</a></li>
+            <!-- Dropdown Trigger -->
+            <li><a class="dropdown-trigger" href="#!" data-target="dropdown-language" style="color: #000;">{% trans 'Language' %}<i class="material-icons right">arrow_drop_down</i></a></li>
+            {% if request.user.is_authenticated %}
+                <li><a class="dropdown-trigger" href="#!" data-target="dropdown-user" style="color: #000;">{{ request.user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+<script>
+    $(document).ready(function(){
+        $(".dropdown-trigger").dropdown();
+    });
+</script>
 </body>

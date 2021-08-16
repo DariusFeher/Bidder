@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 
+from django.conf.global_settings import DATETIME_INPUT_FORMATS, TIME_INPUT_FORMATS
+from django.conf.locale.ro.formats import DECIMAL_SEPARATOR, THOUSAND_SEPARATOR
 from django.utils.translation import gettext
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -44,10 +46,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'materializecssform',
+    'materialize',
+    'phonenumber_field',
 
     # Local
     'users',
     'bidnbuy',
+    'products',
+    'places',
 
     # Allauth
     'allauth',
@@ -158,9 +164,8 @@ LANGUAGES = [
 ]
 
 LOCALE_PATHS = (
-    os.path.join(BASE_DIR,  'users', 'locale'),
-    os.path.join(BASE_DIR,  'bidnbuy', 'locale'),
-    './django/conf/locale/',
+    os.path.join(BASE_DIR, 'locale'),
+    '/django/conf/locale',
 )
 
 TIME_ZONE = 'UTC'
@@ -194,3 +199,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+MEDIA_URL = '/img/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/img')
+
+# ISO 8601 datetime format to accept html5 datetime input values
+DATETIME_INPUT_FORMATS += ["%Y-%m-%dT%H:%M:%S", "%Y-%m-%dT%H:%M", "%d %B %Y at %I:%M %p"]
+TIME_INPUT_FORMATS += ['%I:%M %p']
+DECIMAL_SEPARATOR = '.'
+THOUSAND_SEPARATOR = ','
+
+
+PLACES_MAPS_API_KEY='AIzaSyBXVUYyn1KJnqaN5oE5dpaL9eVHFo9gLXg'
+PLACES_MAP_WIDGET_HEIGHT=480
+PLACES_MAP_OPTIONS='{"center": { "lat": 44.439663, "lng": 26.096306 }, "zoom": 10, "maxZoom": 10}'
+PLACES_MARKER_OPTIONS='{"draggable": true}'

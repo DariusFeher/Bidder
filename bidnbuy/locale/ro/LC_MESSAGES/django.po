@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-30 02:39+0300\n"
+"POT-Creation-Date: 2021-08-16 12:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,8 +44,8 @@ msgstr "O zi frumoasa,"
 msgid "Bidder Team"
 msgstr "Echipa Bidder"
 
-#: templates/accounts/login.html:6 templates/accounts/login.html:21
-#: templates/accounts/register.html:55
+#: templates/accounts/login.html:5 templates/accounts/login.html:21
+#: templates/accounts/register.html:56
 msgid "Login"
 msgstr "Intra in cont"
 
@@ -58,7 +58,7 @@ msgstr "%(link_begin)s Cereti un nou link de activare %(link_end)s"
 msgid "LOGIN"
 msgstr "AUTENTIFICARE"
 
-#: templates/accounts/login.html:59 templates/accounts/register.html:45
+#: templates/accounts/login.html:59 templates/accounts/register.html:46
 msgid "or"
 msgstr "sau"
 
@@ -102,19 +102,19 @@ msgstr "Va rugam sa accesati urmatoarea pagina si alegeti o noua parola:"
 msgid "Register"
 msgstr "Inregistrare"
 
-#: templates/accounts/register.html:16
+#: templates/accounts/register.html:17
 msgid "Register Account"
 msgstr "Inregistrare"
 
-#: templates/accounts/register.html:39
+#: templates/accounts/register.html:40
 msgid "REGISTER"
 msgstr "Inregistreaza-te"
 
-#: templates/accounts/register.html:50
+#: templates/accounts/register.html:51
 msgid "Sign up with Google"
 msgstr "Inregistrati-va cu Google"
 
-#: templates/accounts/register.html:55
+#: templates/accounts/register.html:56
 msgid "Already have an account?"
 msgstr "Aveti deja un cont?"
 
@@ -130,6 +130,10 @@ msgstr ""
 "Introduceti email-ul dumneavoastra si va vom trimite un nou link de activare."
 
 #: templates/accounts/resend_activation.html:30
+#: templates/products/edit_product.html:180
+#: templates/products/edit_product_copy.html:150
+#: templates/products/new_prod_copy.html:145
+#: templates/products/new_product.html:160
 msgid "Submit"
 msgstr "Trimite"
 
@@ -167,21 +171,262 @@ msgstr ""
 msgid "Reset my password"
 msgstr " Resetati parola "
 
-#: templates/home.html:3
-msgid "Home"
-msgstr "Acasa"
+#: templates/home.html:24
+msgid "Available products"
+msgstr "Anunturi disponibile"
 
-#: templates/home.html:5
-msgid "Welcome to Bidder!"
-msgstr "Bine ati venit pe site-ul Bidder!"
+#: templates/home.html:41
+msgid "Find out more information"
+msgstr "Afla mai multe informatii despre produs"
 
-#: templates/navbar.html:14
+#: templates/home.html:43
+msgid "Add to favourite"
+msgstr "Adauga la favorite"
+
+#: templates/home.html:44 templates/products/detail_product.html:46
+msgid "Auction ends on "
+msgstr "Licitatia se incheie pe "
+
+#: templates/home.html:46
+msgid "Last bid:"
+msgstr "Ultima licitatie:"
+
+#: templates/home.html:52
+msgid "BID NOW"
+msgstr "LICITEAZA ACUM"
+
+#: templates/navbar.html:57
+msgid "Logout"
+msgstr "Deconectare"
+
+#: templates/navbar.html:86
+msgid "CREATE NEW AD"
+msgstr "ADAUGA UN ANUNT NOU"
+
+#: templates/navbar.html:88
 msgid "Language"
 msgstr "Limba"
 
-#: templates/navbar.html:42
-msgid "Logout"
-msgstr "Deconectare"
+#: templates/products/detail_product.html:18
+#: templates/products/edit_product.html:55
+#: templates/products/new_product.html:51
+msgid "Product details"
+msgstr "Detaliile produsului"
+
+#: templates/products/detail_product.html:22
+msgid "Posted at"
+msgstr "Postat la"
+
+#: templates/products/detail_product.html:49
+#: templates/products/edit_product.html:75
+#: templates/products/edit_product_copy.html:72
+msgid "Starting price"
+msgstr "Pret de pornire"
+
+#: templates/products/detail_product.html:52
+#: templates/products/detail_product.html:80
+msgid "LEI"
+msgstr "LEI"
+
+#: templates/products/detail_product.html:54
+#: templates/products/detail_product.html:82
+msgid "USD (US$)"
+msgstr "USD (US$)"
+
+#: templates/products/detail_product.html:56
+#: templates/products/detail_product.html:84
+msgid "EUR (€)"
+msgstr "EURO (€)"
+
+#: templates/products/detail_product.html:58
+#: templates/products/detail_product.html:86
+msgid "GBP (£)"
+msgstr "LIRE (£)"
+
+#: templates/products/detail_product.html:65
+msgid "Condition"
+msgstr "Stare"
+
+#: templates/products/detail_product.html:68
+msgid "NEW"
+msgstr "Nou"
+
+#: templates/products/detail_product.html:70
+msgid "USED"
+msgstr "Folosit"
+
+#: templates/products/detail_product.html:77
+msgid "Last bid"
+msgstr "Ultima licitatie"
+
+#: templates/products/detail_product.html:95
+msgid "Press the button to bid the entered amount"
+msgstr "Apasati butonul pentru a licita suma introdusa"
+
+#: templates/products/detail_product.html:95
+msgid "BID"
+msgstr "LICITEAZA"
+
+#: templates/products/detail_product.html:103
+msgid "About this item..."
+msgstr "Despre acest produs..."
+
+#: templates/products/detail_product.html:109
+msgid "Edit"
+msgstr "Editeaza"
+
+#: templates/products/detail_product.html:114
+#: templates/products/new_product.html:17
+msgid "Delete"
+msgstr "Sterge"
+
+#: templates/products/detail_product.html:124
+msgid "Seller"
+msgstr "Vanzator"
+
+#: templates/products/detail_product.html:127
+msgid "Member since:"
+msgstr "Membru din:"
+
+#: templates/products/detail_product.html:130
+#: templates/products/edit_product.html:176
+#: templates/products/new_product.html:157
+msgid "Location"
+msgstr "Localizare"
+
+#: templates/products/edit_product.html:4
+#: templates/products/edit_product_copy.html:4
+msgid "Edit Product"
+msgstr "Editeaza Produsul"
+
+#: templates/products/edit_product.html:47
+#: templates/products/edit_product_copy.html:48
+msgid "Edit product"
+msgstr "Editeaza Produsul"
+
+#: templates/products/edit_product.html:73
+#: templates/products/edit_product_copy.html:70
+msgid "Please set the product's starting price"
+msgstr "Va rugam sa setati pretul de pornire al licitatiei"
+
+#: templates/products/edit_product.html:86
+#: templates/products/new_product.html:73
+msgid "Images"
+msgstr "Imagini"
+
+#: templates/products/edit_product.html:88
+#: templates/products/edit_product_copy.html:91
+#: templates/products/new_prod_copy.html:84
+#: templates/products/new_product.html:75
+msgid "Please choose some images which describe your product"
+msgstr ""
+"Va rugam sa alegeti cateva imagini reprezentative pentru produsul vandut"
+
+#: templates/products/edit_product.html:89
+#: templates/products/edit_product_copy.html:92
+#: templates/products/new_prod_copy.html:85
+#: templates/products/new_product.html:76
+msgid "The first image will be the main image of your product"
+msgstr "Prima imagine va reprezenta imaginea principala a anuntului"
+
+#: templates/products/edit_product.html:90
+#: templates/products/new_product.html:77
+msgid "We recommend using horizontal/landscape images"
+msgstr "Va recomandam sa folositi imagini orizontale/tip peisaj"
+
+#: templates/products/edit_product.html:150
+#: templates/products/new_product.html:137
+msgid "Auction details"
+msgstr "Detalii despre licitatie"
+
+#: templates/products/edit_product.html:156
+#: templates/products/edit_product_copy.html:79
+#: templates/products/new_prod_copy.html:75
+#: templates/products/new_product.html:143
+msgid "End date"
+msgstr "Data incheierii"
+
+#: templates/products/edit_product.html:164
+#: templates/products/edit_product_copy.html:87
+msgid "Please choose an ending date and time for the bidding"
+msgstr "Va rugam sa alegeti data si ora incheierii licitatiei"
+
+#: templates/products/edit_product.html:165
+#: templates/products/edit_product_copy.html:88
+msgid "End hour"
+msgstr "Ora incheierii"
+
+#: templates/products/edit_product.html:171
+#: templates/products/new_product.html:152
+msgid "Contact details"
+msgstr "Detalii de contact"
+
+#: templates/products/edit_product.html:257
+#: templates/products/new_product.html:234
+msgid "Enter your city or postal code..."
+msgstr "Introduceti orasul sau codul postal"
+
+#: templates/products/new_prod_copy.html:4
+#: templates/products/new_product.html:4
+msgid "New Product"
+msgstr "Anunt nou"
+
+#: templates/products/new_prod_copy.html:44
+#: templates/products/new_product.html:43
+msgid "New product"
+msgstr "Adauga un anunt nou"
+
+#: templates/products/new_product.html:21
+msgid "Upload"
+msgstr "Incarca"
+
+#~ msgid "January"
+#~ msgstr "Ianuarie"
+
+#~ msgid "February"
+#~ msgstr "Februarie"
+
+#~ msgid "March"
+#~ msgstr "Martie"
+
+#~ msgid "April"
+#~ msgstr "Aprilie"
+
+#~ msgid "May"
+#~ msgstr "Mai"
+
+#~ msgid "June"
+#~ msgstr "Iunie"
+
+#~ msgid "July"
+#~ msgstr "Iulie"
+
+#~ msgid "August"
+#~ msgstr "August"
+
+#~ msgid "September"
+#~ msgstr "Septembrie"
+
+#~ msgid "October"
+#~ msgstr "Octombrie"
+
+#~ msgid "November"
+#~ msgstr "Noiembrie"
+
+#~ msgid "December"
+#~ msgstr "Decembrie"
+
+#~ msgid "at"
+#~ msgstr "la"
+
+#~ msgid "Password reset for user "
+#~ msgstr "Resetare parola pentru utlizatorul "
+
+#~ msgid "Home"
+#~ msgstr "Acasa"
+
+#~ msgid "Welcome to Bidder!"
+#~ msgstr "Bine ati venit pe site-ul Bidder!"
 
 #~ msgid "English"
 #~ msgstr "Engleza"

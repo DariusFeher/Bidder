@@ -1,6 +1,70 @@
-{% extends 'base.html' %}
 {% load i18n %}
-{% block title %}{% trans 'Home' %}{% endblock title %}
+{% load static %}
+{% include 'navbar.html' %}
+{% load materializecss %}
 {% block content %}
-    <h1 id="form-title">{% trans "Welcome to Bidder!" %}</h1>
-{% endblock%}
+<head>
+    <title>Bidder</title>
+    <!-- Compiled and minified CSS -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const gallery = document.querySelectorAll(".materialboxed");
+        M.Materialbox.init(gallery,{});
+        
+    });
+</script>
+<link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="container">
+        <h2 style="text-align: center; color: white;">{% trans "Available products" %} </h2>
+        <div class="products" id="main-container">
+            <script>
+                var cards = 0;
+                var main_container = $("#main-container");
+                {% for product in products %}
+                    if (cards % 3 == 0) {
+                        main_container.append('<div class="row" id ="main-container' + cards / 3 + '"></div>');
+                    }
+                    var row_id = "main-container" + parseInt(cards / 3);
+                    var container = $("#" + row_id);
+                    card = '<div class="col l4 m4 s12">' +
+                                '<div class="card sticky-action">' +
+                                    '<div class="card-image">' +
+                                        '<img src="{{product.picture1.url}}" class="materialboxed" style="width: 100%;  height: 15vw; object-fit: cover;">' +
+                                        '<a class="btn tooltipped teal btn-floating halfway-fab pulse activator" style="display: inline;" data-position="top" data-tooltip="' + "{% trans "Find out more information" %}" + '"><i class="material-icons">info</i></a>' +
+                                    '</div>' +
+                                    '<div class="card-content">' + '<p class="card-title" style="font-weight: bold;">{{product.title}} <button class="btn tooltipped btn-floating red" type="submit" data-position="right" data-tooltip="' + "{% trans "Add to favourite" %}" + '"><i class="material-icons">favorite_border</i></button></p> ' +
+                                    '<p> <span class="material-icons" style="color: red;">hourglass_bottom</span>{% trans "Auction ends on "%} {{product.get_end_date_translated}} </p>'+
+                                    '<p style="margin-top: 2%;"> <span class="material-icons" style="color: teal;">location_on</span> {{product.location.place}} </p>'+
+                                    '<p style="font-size: x-large; margin-top: 3%; display: inline;"><span class="material-icons" style="color: teal;">paid</span> {% trans "Last bid:" %} <p style="font-size: x-large; margin-top: 3%; display: inline; color: red;">{{product.last_bid}} LEI </p></p></div>'+
+                                    '<div class="card-reveal">' +
+                                        '<span class="card-title">{{product.title}}<i class="material-icons right">close</i></span>' +
+                                        '<p style="white-space: pre-line;">' + `{{product.description | safe}}` + '</p>' +
+                                    '</div>' +
+                                    '<div class="card-action">' +
+                                        '<a href="{{product.get_detail_url}}">{% trans "BID NOW" %}</a>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>';
+                    container.append(card);
+                    cards++;
+                {% endfor %}
+            </script>
+        </div>
+    </div>
+</body>
+{% block script %}
+    {% load static %}
+    <script src="{% static 'background.js' %}"></script>
+    <script>
+    $(document).ready(function(){
+        $('.tooltipped').tooltip();
+    });
+    </script>
+{% endblock script %}
+{% endblock content %}

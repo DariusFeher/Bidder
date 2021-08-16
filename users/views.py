@@ -142,7 +142,7 @@ def request_reset_password(request):
         return redirect('request_new_password')
     context = {'form': form}
     return render(request, 'accounts/reset_password_request.html', context)
-        
+
 def reset_password(request, uidb64, token):
     if request.method == "POST":
         try:
