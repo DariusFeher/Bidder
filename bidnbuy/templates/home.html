@@ -26,7 +26,7 @@
             <script>
                 var cards = 0;
                 var main_container = $("#main-container");
-                {% for product in products %}
+                {% for product in page_obj %}
                     if (cards % 3 == 0) {
                         main_container.append('<div class="row" id ="main-container' + cards / 3 + '"></div>');
                     }
@@ -55,6 +55,25 @@
                     cards++;
                 {% endfor %}
             </script>
+           <ul class="pagination center" style="padding-bottom: 3%;">
+            {% if page_obj.has_previous %}
+                <li><a href="?page={{page_obj.previous_page_number}}"><i class="material-icons">chevron_left</i></a></li>
+            {% else %}
+                <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+            {% endif %}
+            {% for i in range %}
+                {% if i == page_obj.number %}
+                    <li class="active teal"><a href="?page={{page_obj.number}}">{{page_obj.number}}</a></li>
+                {% else %}
+                    <li class="waves-effect"><a href="?page={{i}}">{{i}}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="waves-effect"><a href="?page={{page_obj.next_page_number}}"><i class="material-icons">chevron_right</i></a></li>
+            {% else %}
+                <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+            {% endif %}
+        </ul>
         </div>
     </div>
 </body>
