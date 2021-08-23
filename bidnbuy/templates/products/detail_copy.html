@@ -17,26 +17,22 @@
         .help-block{
             color: #ff0000 !important;
         }
-		.text-alerts {
+        .alert {
+	.card-content {
+		span {
 			font-weight: bold;
-			font-size: x-large;
-			margin-right:2%%;
+			font-size: 1.1em;
+			margin-right:4px;
 		}
-		.icon-alerts {
-			font-size: x-large;
+		.material-icons {
+			font-size: 1.5em;
 			position: relative;
-			margin-right: 2%;
-            margin-bottom: 0.5%;
+			top: 5px;
+			margin-right: 0.5em;
 		}	
+	}
+}
     </style>
-    <script>
-        function showSuccessMessage(msg){
-            M.toast({html: '<h5><i class="small material-icons">check_circle</i>  ' + msg + '</h5>', classes: 'green', displayLength: '4000'});
-        };
-        function showErrorMessage(msg){
-            M.toast({html: '<h5><i class="small material-icons">report_problem</i>  ' + msg + '</h5>', classes: 'red', displayLength: '4000'});
-        };
-    </script>
 </head>
 
 <div layout:fragment="content" style="width: 85%; margin: auto;">
@@ -44,18 +40,11 @@
         <h1 id="form-title" style="text-align: center; padding-top: 0%; margin-top: 0%;"> {% trans "Product details" %} </h1>
         <div style="width: 65%; height: auto; display: inline-block;">
             <div class="justify-content-center product_card">
-                {% for message in messages %}
-                    {% if message.tags == "error" %}
-                        <script>
-                            showErrorMessage("{{message}}");
-                        </script>
-                    {% endif %}
-                    {% if message.tags == "success" %}
-                        <script>
-                            showSuccessMessage("{{message}}");
-                        </script>
-                    {% endif %}
-                {% endfor %}
+            <div class="alert card red lighten-4 red-text text-darken-4">
+		<div class="card-content">
+			<p><i class="material-icons">report</i><span>This is an alert:</span> It has text within it.</p>
+		</div>
+	</div>
                 <h3>{{object.title}}</h3>
                 <h6>{% trans "Posted at"%} {{object.get_date_posted_translated}}</h6>
                     <div class="carousel carousel-slider center">
@@ -79,7 +68,7 @@
                     {% endif %}
                 </div>
                 <div class="mb-4" style="width: 100%;">
-                    <div style="width: 30%; height: auto; display: inline-block;">
+                    <div style="width: 60%; height: auto; display: inline-block;">
                         <div class="mt-3 mb-4" style="margin-left: 2%;">
                             <h4 style="font-weight: bold;">{% trans "Starting price" %}</h4>
                             <h3 style="display: inline; margin-top: 0%; padding-top: 0%; font-weight: bold; color: #009192">  {{object.starting_price}}</h3><h3 style="display: inline; font-weight: bold; color: #009192">
@@ -124,7 +113,7 @@
                             </h3>
                         </div>
                         <div class="mt-4 mb-3">
-                            <form method="POST" style="width: 100%;">
+                            <form method="POST" style=" width: 100%;">
                                 {% csrf_token %}
                                 <div class="input-group">
                                     <div style="display: inline;">
@@ -132,19 +121,12 @@
                                     </div>
                                     <div style="display: inline;">
                                         <a href="{{obj.get_detail_url}}">
-                                            <button id="id_bid_btn" class="btn tooltipped red" type="submit" name="action" style="color: white; margin-top:25%; margin-bottom:25%;" data-position="bottom" data-tooltip="{% trans "Press the button to bid the entered amount"%}">{% trans "BID" %}</button>
+                                            <button class="btn tooltipped red" type="submit" name="action" style="color: white; margin-top:25%; margin-bottom:25%;" data-position="bottom" data-tooltip="{% trans "Press the button to bid the entered amount"%}">{% trans "BID" %}</button>
                                         </a>
                                     </div>
                                     {{auctionForm.non_field_errors}}
                                 </div>
                             </form>
-                        </div>
-                    </div>
-                    <div style="width: 25%; display: inline-block; margin-left: 3%; margin-top: 0%; padding-top: 0%;">
-                        <div>
-                            <h4 style="font-weight: bold; padding-top: 0%; margin-top: 0%;"> {% trans "Who is interested?" %}</h4>
-                            <h5><span class="material-icons-outlined material-icons">task_alt</span> {{bidders}} {% trans "bidder(s)" %}</h5>
-                            <h5><span class="material-icons-outlined material-icons">task_alt</span> {{bids}} {% trans "bid(s)" %}</h5>
                         </div>
                     </div>
                 </div>
@@ -186,9 +168,9 @@
             </div>
             <div class="justify-content-center product_card">
                 <h4>{% trans "Seller" %} </h4>
-                <h5 style="display: inline;"><i class="large material-icons" style="display: inline; font-size: xx-large; margin-right: 3%; color: teal; vertical-align: bottom; margin-left: 2%;">account_circle</i> {{object.seller.email}} </h5>
+                <h5 style="display: inline;"><i class="large material-icons" style="display: inline; font-size: xx-large; margin-right: 3%; color: teal; vertical-align: bottom; margin-left: 2%;">account_circle</i> {{request.user.email}} </h5>
                 <h5><span class="large material-icons" style="font-size: xx-large; margin-right: 3%; color: teal; vertical-align: bottom; margin-left: 2%;">phone</span>{{object.phone_number}} </h5>
-                <h5><span class="large material-icons" style="font-size: xx-large; margin-right: 3%; color: teal; vertical-align: bottom; margin-left: 2%;">beenhere</span>{% trans "Member since:" %} {{object.seller.get_joined_date}} </h5>
+                <h5><span class="large material-icons" style="font-size: xx-large; margin-right: 3%; color: teal; vertical-align: bottom; margin-left: 2%;">beenhere</span>{% trans "Member since:" %} {{request.user.get_joined_date}} </h5>
             </div>
             <div class="justify-content-center product_card">
                 <h4>{% trans "Location" %} </h4>
@@ -199,7 +181,6 @@
         </div>
     </div>
 </div>
-
 
 {% block script %}
 
@@ -259,8 +240,6 @@ $(document).ready(function(){
           let headline = document.getElementById("headline"),
               countdown = document.getElementById("countdown"),
               content = document.getElementById("content");
-              $("#id_bid_btn").attr("disabled", true);
-              $("#id_bid_amount").attr("disabled", true);
 
           headline.innerText = '{% trans "Bidding finished!"%}';
           countdown.style.display = "none";

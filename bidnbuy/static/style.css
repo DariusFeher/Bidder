@@ -264,3 +264,42 @@ cursor: pointer;
     justify-content: center;
     align-items: center;
 }
+/* --- COUNTDOWN CSS  --- */
+/* general styling */
+  
+  #headline {
+    font-weight: normal;
+    letter-spacing: .125rem;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  
+  #dhms {
+    display: inline-block;
+    font-size: large;
+    list-style-type: none;
+    padding: 3%;
+    text-transform: uppercase;
+  }
+  
+  li span {
+    display: block;
+    font-size: xx-large;
+  }
+  
+  
+  @media all and (max-width: 768px) {
+    h1 {
+      font-size: 1.5rem;
+    }
+    
+    li {
+      font-size: 1.125rem;
+      padding: .75rem;
+    }
+    
+    li span {
+      font-size: 3.375rem;
+    }
+  }
+/* --- END OF COUNTDOWN CSS  --- */

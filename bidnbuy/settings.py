@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'bidnbuy',
     'products',
     'places',
+    'auctions',
 
     # Allauth
     'allauth',
@@ -63,6 +64,9 @@ INSTALLED_APPS = [
     # Providers
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
+
+    # Task scheduler
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -176,6 +180,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_FROM_USER = os.environ.get('EMAIL_FROM_USER')
 EMAIL_HOST = os.environ.get('EMAIL_HOST')
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
@@ -214,3 +219,9 @@ PLACES_MAPS_API_KEY='AIzaSyBXVUYyn1KJnqaN5oE5dpaL9eVHFo9gLXg'
 PLACES_MAP_WIDGET_HEIGHT=480
 PLACES_MAP_OPTIONS='{"center": { "lat": 44.439663, "lng": 26.096306 }, "zoom": 10, "maxZoom": 10}'
 PLACES_MARKER_OPTIONS='{"draggable": true}'
+
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'

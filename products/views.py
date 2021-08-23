@@ -1,20 +1,36 @@
 import datetime
+import os
 from math import prod
 from pydoc import describe
-import os
+
 import pytz
+from auctions.forms import AuctionForm
+from auctions.models import Auction
+from users.models import Account
+from auctions.utils import (get_bidders_product, get_no_bidders_product,
+                            get_no_bids_product)
+from django.conf import settings
 from django.contrib import messages
-from django.core.exceptions import NON_FIELD_ERRORS
-from django.shortcuts import get_object_or_404, redirect, render
-from django.utils.translation import gettext as _
-from django.views.generic import DetailView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import NON_FIELD_ERRORS
+from django.core.mail import EmailMessage
+from django.db.models import Count
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template import Context
+from django.template.loader import get_template, render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.html import strip_tags
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.translation import gettext as _
 from places.fields import PlacesField
+from django.utils import timezone
+from datetime import timedelta
 
-from products.models import Product
 
 from .forms import ProductForm
+from .models import Product
 
 # Create your views here.
 conditions = {
@@ -52,7 +68,7 @@ def newProduct(request):
             location_1 = request.POST.get('location_1')
             location_2 = request.POST.get('location_2')
             location = str(location_0 + ", " + location_1 + ", " + location_2)
-            date = datetime.datetime.combine(datetime.datetime.strptime(end_date, '%Y-%m-%d'), datetime.datetime.strptime(end_hour, '%H:%M %p').time())
+            date = datetime.datetime.combine(form.cleaned_data['end_date'], form.cleaned_data['end_hour'])
             product = Product(
                               title=title,
                               description=description,
@@ -156,8 +172,6 @@ def editProduct(request, pk):
             detail_page = product.get_detail_url()
             return redirect(detail_page)
         else:
-            print(form.errors)
-            print(request.POST.get('end_hour'))
             form.add_error(NON_FIELD_ERRORS, _("Something went wrong..."))
             context = {"form": form, 'object': product}
             return render(request, 'products/edit_product.html', context)
@@ -174,11 +188,96 @@ def deleteProduct(request, pk):
     messages.success(request, _("Product ") + product.title + _(" deleted successfully"))
     return redirect('/')
 
+# def get_no_bids_product(product):
+#     return (Auction.objects.filter(product=product).count() - 1)
+
+# def get_no_bidders_product(product):
+#     return (Auction.objects.filter(product=product).distinct('bidder').count() - 1)
+
+# def get_bidders_product(product, bidder):
+#     return Auction.objects.filter(product=product).values('bidder').distinct('bidder').exclude(bidder=bidder)
+
+def send_bidding_confirmation(request, user, product):
+    current_site = get_current_site(request)
+    template = get_template('auctions/bidding_confirmation.html')
+    context = {
+        'user': user.username,
+        'product': product,
+        'domain': str(current_site).rstrip("/"),
+        'bidders': get_no_bidders_product(product) - 1,
+        'bids': get_no_bids_product(product) - 1,
+    }
+    content = template.render(context)
+    email_subject = (user.username + _(', your bidding is the highest one at the moment!'))
+    email = EmailMessage(subject=email_subject,
+                body=content,
+                from_email=settings.EMAIL_FROM_USER,
+                to=[user.email])
+    email.content_subtype = "html"
+    email.send()
+
+def send_outbidding_email(request, product, last_auction):
+    current_site = get_current_site(request)
+    template = get_template('auctions/outbidding_information.html')
+    email_to = last_auction.bidder.email
+    username = last_auction.bidder.username
+    context = {
+        'user': username,
+        'product': product,
+        'domain': str(current_site).rstrip("/"),
+        'bidders': get_no_bidders_product(product) - 1,
+        'bids': get_no_bids_product(product) - 1,
+    }
+    content = template.render(context)
+    email_subject = (_('Outbid! You need to raise your bid for ') + product.title)
+    email = EmailMessage(subject=email_subject,
+                body=content,
+                from_email=settings.EMAIL_FROM_USER,
+                to=[email_to])
+    email.content_subtype = "html"
+    email.send()
+
+
 @login_required(login_url='/login/')
 def detailPage(request, pk):
-    product = get_object_or_404(Product, pk=pk, seller=request.user)
+    product = get_object_or_404(Product, pk=pk)
     context = {'object': product}
+    auctionForm = AuctionForm(product=product, bidder=request.user)
+    context['auctionForm'] = auctionForm
+    if request.method == "POST":
+        auctionForm = AuctionForm(request.POST, product=product, bidder=request.user)
+        if auctionForm.is_valid() and timezone.now() + timedelta(hours=3) <= product.end_date:
+            auction = Auction(
+                bidder=request.user,
+                product=product,
+                bid_amount=auctionForm.cleaned_data.get('bid_amount')
+            )
+            auction.save()
+            Product.objects.filter(pk=pk).update(
+                last_bid=auctionForm.cleaned_data.get('bid_amount')
+            )
+            product = get_object_or_404(Product, pk=pk)
+            context = {'object': product}
+            user = Account.objects.get(email=request.user)
+            send_bidding_confirmation(request, user, product)
+            messages.success(request,  _('Your bid has been recorded.'))
+            last_auction = Auction.objects.filter(product=product).order_by('-bid_time')
+            if len(last_auction) >= 2 and last_auction[1].bidder.email != request.user.email:
+                send_outbidding_email(request, product, last_auction[1])
+        else:
+            if timezone.now() + timedelta(hours=3) > product.end_date:
+                messages.error(request,  _('Auction has finished!'))
+            else:
+                messages.error(request,  _('Something went wrong...'))
+        context['auctionForm'] = auctionForm
+    last_auction = Auction.objects.filter(product=product).order_by('-bid_time')
+    if len(last_auction):
+        context['last_auction'] = last_auction[0]
+    else:
+        context['last_auction'] = ""
     form = ProductForm(instance=product)
     context['form'] = form
+    context['bidders'] = get_no_bidders_product(product)
+    context['bids'] = get_no_bids_product(product)
     template_name = 'products/detail_product.html'
     return render(request, template_name, context)

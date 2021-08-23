@@ -1,14 +1,16 @@
+import calendar
+from datetime import datetime, timedelta, timezone
+
 from django.db import models
 from django.shortcuts import reverse
-from django.utils.translation import gettext as _
 from django.utils.translation import get_language
-from requests import request
-from users.models import Account
+from django.utils.translation import gettext as _
 from phonenumber_field.modelfields import PhoneNumberField
 from places.fields import PlacesField
-import calendar
+from requests import request
+from users.models import Account
 
-# Create your models here.
+from .utils import date_diff_in_seconds, dhms_from_seconds
 
 conditions = [
             ('1', _('New')),
@@ -41,6 +43,7 @@ class Product(models.Model):
     phone_number = PhoneNumberField()
     currency = models.CharField(max_length=20, choices=currencies)
     location = PlacesField(null=True)
+    finished_email_sent = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.title
@@ -73,6 +76,13 @@ class Product(models.Model):
     
     def get_delete_url(self):
     	return reverse('delete-product', kwargs={'pk' : self.pk})
+    
+    def get_end_date_ISO_formatted(self):
+      return self.end_date.strftime("%d %B %Y %H:%M")
+    
+    def get_time_remaining(self):
+      return ("%d days, %d hrs, %d mins" % dhms_from_seconds(date_diff_in_seconds(self.end_date, datetime.now(timezone.utc) + timedelta(hours = 3))))
+
 
 
 
