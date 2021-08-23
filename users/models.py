@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
-
 class MyAccountManager(BaseUserManager):
     def create_user(self, email, username, password):
         if not email:
@@ -60,7 +59,3 @@ class Account(AbstractBaseUser):
     
     def get_joined_date(self):
         return self.date_joined.strftime("%d %B %Y")
-    
-
-
-

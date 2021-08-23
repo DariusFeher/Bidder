@@ -1,6 +1,5 @@
 import calendar
 from datetime import datetime, timedelta, timezone
-
 from django.db import models
 from django.shortcuts import reverse
 from django.utils.translation import get_language
@@ -9,6 +8,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from places.fields import PlacesField
 from requests import request
 from users.models import Account
+
 
 from .utils import date_diff_in_seconds, dhms_from_seconds
 
@@ -82,8 +82,3 @@ class Product(models.Model):
     
     def get_time_remaining(self):
       return ("%d days, %d hrs, %d mins" % dhms_from_seconds(date_diff_in_seconds(self.end_date, datetime.now(timezone.utc) + timedelta(hours = 3))))
-
-
-
-
-

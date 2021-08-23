@@ -1,8 +1,5 @@
 import datetime
 import os
-from math import prod
-from pydoc import describe
-
 import pytz
 from auctions.forms import AuctionForm
 from auctions.models import Auction
@@ -27,6 +24,9 @@ from django.utils.translation import gettext as _
 from places.fields import PlacesField
 from django.utils import timezone
 from datetime import timedelta
+from .tasks import send_bidding_confirmation, send_outbidding_email
+
+from json import JSONEncoder
 
 
 from .forms import ProductForm
@@ -197,46 +197,49 @@ def deleteProduct(request, pk):
 # def get_bidders_product(product, bidder):
 #     return Auction.objects.filter(product=product).values('bidder').distinct('bidder').exclude(bidder=bidder)
 
-def send_bidding_confirmation(request, user, product):
-    current_site = get_current_site(request)
-    template = get_template('auctions/bidding_confirmation.html')
-    context = {
-        'user': user.username,
-        'product': product,
-        'domain': str(current_site).rstrip("/"),
-        'bidders': get_no_bidders_product(product) - 1,
-        'bids': get_no_bids_product(product) - 1,
-    }
-    content = template.render(context)
-    email_subject = (user.username + _(', your bidding is the highest one at the moment!'))
-    email = EmailMessage(subject=email_subject,
-                body=content,
-                from_email=settings.EMAIL_FROM_USER,
-                to=[user.email])
-    email.content_subtype = "html"
-    email.send()
+# def send_bidding_confirmation(request, user, product):
+#     current_site = get_current_site(request)
+#     template = get_template('auctions/bidding_confirmation.html')
+#     context = {
+#         'user': user.username,
+#         'product': product,
+#         'domain': str(current_site).rstrip("/"),
+#         'bidders': get_no_bidders_product(product) - 1,
+#         'bids': get_no_bids_product(product) - 1,
+#     }
+#     content = template.render(context)
+#     email_subject = (user.username + _(', your bidding is the highest one at the moment!'))
+#     email = EmailMessage(subject=email_subject,
+#                 body=content,
+#                 from_email=settings.EMAIL_FROM_USER,
+#                 to=[user.email])
+#     email.content_subtype = "html"
+#     email.send()
 
-def send_outbidding_email(request, product, last_auction):
-    current_site = get_current_site(request)
-    template = get_template('auctions/outbidding_information.html')
-    email_to = last_auction.bidder.email
-    username = last_auction.bidder.username
-    context = {
-        'user': username,
-        'product': product,
-        'domain': str(current_site).rstrip("/"),
-        'bidders': get_no_bidders_product(product) - 1,
-        'bids': get_no_bids_product(product) - 1,
-    }
-    content = template.render(context)
-    email_subject = (_('Outbid! You need to raise your bid for ') + product.title)
-    email = EmailMessage(subject=email_subject,
-                body=content,
-                from_email=settings.EMAIL_FROM_USER,
-                to=[email_to])
-    email.content_subtype = "html"
-    email.send()
+# def send_outbidding_email(request, product, last_auction):
+#     current_site = get_current_site(request)
+#     template = get_template('auctions/outbidding_information.html')
+#     email_to = last_auction.bidder.email
+#     username = last_auction.bidder.username
+#     context = {
+#         'user': username,
+#         'product': product,
+#         'domain': str(current_site).rstrip("/"),
+#         'bidders': get_no_bidders_product(product) - 1,
+#         'bids': get_no_bids_product(product) - 1,
+#     }
+#     content = template.render(context)
+#     email_subject = (_('Outbid! You need to raise your bid for ') + product.title)
+#     email = EmailMessage(subject=email_subject,
+#                 body=content,
+#                 from_email=settings.EMAIL_FROM_USER,
+#                 to=[email_to])
+#     email.content_subtype = "html"
+#     email.send()
 
+class MyEncoder(JSONEncoder):
+        def default(self, o):
+            return o.__dict__ 
 
 @login_required(login_url='/login/')
 def detailPage(request, pk):
@@ -259,11 +262,11 @@ def detailPage(request, pk):
             product = get_object_or_404(Product, pk=pk)
             context = {'object': product}
             user = Account.objects.get(email=request.user)
-            send_bidding_confirmation(request, user, product)
+            send_bidding_confirmation.delay(user.pk, product.pk)
             messages.success(request,  _('Your bid has been recorded.'))
             last_auction = Auction.objects.filter(product=product).order_by('-bid_time')
             if len(last_auction) >= 2 and last_auction[1].bidder.email != request.user.email:
-                send_outbidding_email(request, product, last_auction[1])
+                send_outbidding_email.delay(product.pk, last_auction[1].pk)
         else:
             if timezone.now() + timedelta(hours=3) > product.end_date:
                 messages.error(request,  _('Auction has finished!'))

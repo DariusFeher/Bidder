@@ -5,9 +5,6 @@ from django.conf import settings
 from django.core.mail import send_mail
 from celery.schedules import crontab
 
-
-
-
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bidnbuy.settings')
 
@@ -32,14 +29,4 @@ app.conf.beat_schedule = {
 @app.task(bind=True)
 def debug_task(self):
     print(f'Request: {self.request!r}')
-
-# @app.task(bind=True)
-# def send_email_task(self):
-#     send_mail(
-#         'Celery task worked!',
-#         'this is proof that is working',
-#         settings.EMAIL_FROM_USER,
-#         ['dariusmarian51@yahoo.com']
-#     )
-#     return None
 

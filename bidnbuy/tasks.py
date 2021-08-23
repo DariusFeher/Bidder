@@ -17,7 +17,6 @@ from celery import shared_task
 def send_email_task():
     products = Product.objects.all()
     current_site = Site.objects.get_current().domain
-    print(current_site)
     for product in products:
         if product.end_date <= timezone.now() + timedelta(hours=3) and product.finished_email_sent is False:
             last_auction = Auction.objects.filter(product=product).order_by('-bid_time')

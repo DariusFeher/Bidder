@@ -3,8 +3,6 @@ from django.utils import timezone
 from products.models import Product
 from users.models import Account
 
-# Create your models here.
-
 class Auction(models.Model):
     bidder = models.ForeignKey(Account, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
