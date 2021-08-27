@@ -1,9 +1,13 @@
+from bidnbuy.utils import filter_products
 import datetime
+from math import prod
 import os
+from datetime import timedelta
+from json import JSONEncoder
+
 import pytz
 from auctions.forms import AuctionForm
 from auctions.models import Auction
-from users.models import Account
 from auctions.utils import (get_bidders_product, get_no_bidders_product,
                             get_no_bids_product)
 from django.conf import settings
@@ -13,24 +17,23 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import NON_FIELD_ERRORS
 from django.core.mail import EmailMessage
+from django.core.paginator import Paginator
 from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template import Context
 from django.template.loader import get_template, render_to_string
+from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.utils.html import strip_tags
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.translation import gettext as _
+from favourites.models import Favourite
 from places.fields import PlacesField
-from django.utils import timezone
-from datetime import timedelta
-from .tasks import send_bidding_confirmation, send_outbidding_email
+from users.models import Account
 
-from json import JSONEncoder
-
-
-from .forms import ProductForm
+from .forms import ProductForm, SearchForm
 from .models import Product
+from .tasks import send_bidding_confirmation, send_outbidding_email
 
 # Create your views here.
 conditions = {
@@ -56,8 +59,6 @@ def newProduct(request):
             currency = request.POST.get('currency')
             starting_price = request.POST.get('starting_price')
             phone_number = request.POST.get('phone_number')
-            end_date = request.POST.get('end_date')
-            end_hour = request.POST.get('end_hour')
             picture1 = request.FILES.get('picture1')
             picture2 = request.FILES.get('picture2')
             picture3 = request.FILES.get('picture3')
@@ -91,7 +92,6 @@ def newProduct(request):
             detail_page = product.get_detail_url()
             return redirect(detail_page)
         else:
-            print(form.errors)
             form.add_error(NON_FIELD_ERRORS, _("Something went wrong..."))
     context = {'form': form}
     return render(request, 'products/new_product.html', context)
@@ -188,58 +188,6 @@ def deleteProduct(request, pk):
     messages.success(request, _("Product ") + product.title + _(" deleted successfully"))
     return redirect('/')
 
-# def get_no_bids_product(product):
-#     return (Auction.objects.filter(product=product).count() - 1)
-
-# def get_no_bidders_product(product):
-#     return (Auction.objects.filter(product=product).distinct('bidder').count() - 1)
-
-# def get_bidders_product(product, bidder):
-#     return Auction.objects.filter(product=product).values('bidder').distinct('bidder').exclude(bidder=bidder)
-
-# def send_bidding_confirmation(request, user, product):
-#     current_site = get_current_site(request)
-#     template = get_template('auctions/bidding_confirmation.html')
-#     context = {
-#         'user': user.username,
-#         'product': product,
-#         'domain': str(current_site).rstrip("/"),
-#         'bidders': get_no_bidders_product(product) - 1,
-#         'bids': get_no_bids_product(product) - 1,
-#     }
-#     content = template.render(context)
-#     email_subject = (user.username + _(', your bidding is the highest one at the moment!'))
-#     email = EmailMessage(subject=email_subject,
-#                 body=content,
-#                 from_email=settings.EMAIL_FROM_USER,
-#                 to=[user.email])
-#     email.content_subtype = "html"
-#     email.send()
-
-# def send_outbidding_email(request, product, last_auction):
-#     current_site = get_current_site(request)
-#     template = get_template('auctions/outbidding_information.html')
-#     email_to = last_auction.bidder.email
-#     username = last_auction.bidder.username
-#     context = {
-#         'user': username,
-#         'product': product,
-#         'domain': str(current_site).rstrip("/"),
-#         'bidders': get_no_bidders_product(product) - 1,
-#         'bids': get_no_bids_product(product) - 1,
-#     }
-#     content = template.render(context)
-#     email_subject = (_('Outbid! You need to raise your bid for ') + product.title)
-#     email = EmailMessage(subject=email_subject,
-#                 body=content,
-#                 from_email=settings.EMAIL_FROM_USER,
-#                 to=[email_to])
-#     email.content_subtype = "html"
-#     email.send()
-
-class MyEncoder(JSONEncoder):
-        def default(self, o):
-            return o.__dict__ 
 
 @login_required(login_url='/login/')
 def detailPage(request, pk):
@@ -282,5 +230,70 @@ def detailPage(request, pk):
     context['form'] = form
     context['bidders'] = get_no_bidders_product(product)
     context['bids'] = get_no_bids_product(product)
+    if len(Favourite.objects.filter(user=request.user, product=product)):
+        context['favourite'] = True
+    else:
+        context['favourite'] = False
     template_name = 'products/detail_product.html'
     return render(request, template_name, context)
+
+@login_required(login_url='login')
+def myProductsPage(request):
+    products = Product.objects.filter(seller=request.user).order_by("end_date")
+    products_copy = products
+    if request.method == 'GET':
+        searchForm = SearchForm()
+    else:
+        searchForm = SearchForm(request.POST)
+        if searchForm.is_valid():
+            cd = searchForm.cleaned_data
+            products = filter_products(cd, products)
+    msg = _('You currently have no ads...')
+    if len(products_copy) != 0 and len(products) == 0:
+        msg = _('There are no products matching your search...')
+    paginator = Paginator(products, 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    favourites_list = []
+    for product in page_obj:
+        if len(Favourite.objects.filter(user=request.user, product=product)):
+            favourites_list.append(product)
+    products = Product.objects.all()
+    return render(request, 'home.html', {'page_obj': page_obj,
+                                        'range': range(1, page_obj.paginator.num_pages + 1),
+                                        'favourites_list' : favourites_list,
+                                        'title': _('Your products'),
+                                        'no_items_msg': msg,
+                                        'page_title': 'My products',
+                                        'searchForm': searchForm,
+                                        })
+
+@login_required(login_url='login')
+def myWishlistPage(request):
+    products_ids = Favourite.objects.filter(user=request.user).values('product')
+    products = Product.objects.filter(pk__in=products_ids).order_by("end_date")
+    products_copy = products
+    if request.method == 'GET':
+        searchForm = SearchForm()
+    else:
+        searchForm = SearchForm(request.POST)
+        if searchForm.is_valid():
+            cd = searchForm.cleaned_data
+            products = filter_products(cd, products)
+    msg = _('You currently have no favourite ads...')
+    if len(products_copy) != 0 and len(products) == 0:
+        msg = _('There are no products matching your search...')
+    paginator = Paginator(products, 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    favourites_list = []
+    for product in page_obj:
+        favourites_list.append(product)
+    return render(request, 'home.html', {'page_obj': page_obj,
+                                        'range': range(1, page_obj.paginator.num_pages + 1),
+                                        'favourites_list' : favourites_list,
+                                        'title': _('Wishlist products'),
+                                        'no_items_msg': msg,
+                                        'page_title': 'Wishlist',
+                                        'searchForm': searchForm,
+                                        })

@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'products',
     'places',
     'auctions',
+    'favourites',
 
     # Allauth
     'allauth',

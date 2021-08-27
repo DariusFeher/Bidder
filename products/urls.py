@@ -8,6 +8,8 @@ from . import views
 urlpatterns = [
     path('products/new/', views.newProduct, name="new-product"),
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
+    path('products/mywishlist/', views.myWishlistPage, name='mywishlist'),
+    path('products/myproducts/', views.myProductsPage, name='myproducts'),
     path('products/<pk>/', views.detailPage, name='detail-product'),
 	path('products/<pk>/edit/', views.editProduct, name='edit-product'),
     path('products/<pk>/delete/', views.deleteProduct, name='delete')

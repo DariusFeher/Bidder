@@ -248,6 +248,11 @@
             $('.modal').modal();
 
         });
+        $(function(){
+            var dtToday = new Date();
+            $('.datepicker').datepicker({minDate: dtToday,
+                                        format: 'yyyy-mm-dd'});
+        });
 
     </script> 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>

@@ -3,11 +3,12 @@ from multiprocessing import Condition
 
 from django import forms
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 from django.forms.models import ModelForm
 from django.utils.translation import ugettext_lazy as _
 from phonenumber_field.formfields import PhoneNumberField
 from places.fields import PlacesField
-
+from users.models import Account
 
 from .models import Product
 
@@ -18,10 +19,11 @@ currencies = [
             ('4', _('GBP (£)'))
         ]
 
-conditions = [      
+conditions = [   
             ('1', _('New')),
             ('2', _('Used'))
         ]
+
 
 class ProductForm(ModelForm):
     title = forms.CharField(label=_('Title'), max_length=100, help_text=_('Please set a suggestive title for your product which contains at least 5 characters'))
@@ -75,12 +77,32 @@ class ProductForm(ModelForm):
     def clean_end_hour(self):
         end_date = self.cleaned_data.get('end_date')
         end_hour = self.cleaned_data.get('end_hour')
-        print("HERE ")
-        print(end_hour)
         current_datetime = datetime.datetime.combine(end_date, end_hour)
         if current_datetime < datetime.datetime.now():
             raise ValidationError(_("The date and time cannot be in the past."))
         return end_hour
     
     
+class SearchForm(forms.Form):
+    conditions2 = [   
+            ('0', _('Choose condition...')),
+            ('1', _('New')),
+            ('2', _('Used'))
+        ]
+    seller_id_list = Product.objects.values('seller').distinct('seller')
+    sellers = [('0', 'Choose seller...')]
+    for seller_id in seller_id_list:
+        id = seller_id['seller']
+        sellers.append((id, Account.objects.get(pk=id)))
     
+    location_places_list = Product.objects.values('location').distinct('location')
+    locations = []
+    for nr, location_place in enumerate(location_places_list):
+        locations.append((nr + 1, location_place['location'].place))
+    locations.sort(key=lambda x:x[1])
+    search_term = forms.CharField(required=False, label=_('Search term...'))
+    seller = forms.ChoiceField(choices=sellers, label=_('Seller'), required=False)
+    condition =  forms.ChoiceField(choices=conditions2, label=_('Condition'), required=False)
+    starting_price = forms.FloatField(widget=forms.NumberInput, localize=True, label=_('Starting price should be less than...'), required=False, validators=[MinValueValidator(1)])
+    end_date = forms.DateField(label=_('The auction should end no later than...'), required=False)
+    location = forms.MultipleChoiceField(choices=locations, label=_('Choose the city, e.g. Bucuresti, Romania'), required=False)

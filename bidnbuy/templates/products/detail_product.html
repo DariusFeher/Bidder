@@ -29,14 +29,6 @@
             margin-bottom: 0.5%;
 		}	
     </style>
-    <script>
-        function showSuccessMessage(msg){
-            M.toast({html: '<h5><i class="small material-icons">check_circle</i>  ' + msg + '</h5>', classes: 'green', displayLength: '4000'});
-        };
-        function showErrorMessage(msg){
-            M.toast({html: '<h5><i class="small material-icons">report_problem</i>  ' + msg + '</h5>', classes: 'red', displayLength: '4000'});
-        };
-    </script>
 </head>
 
 <div layout:fragment="content" style="width: 85%; margin: auto;">
@@ -56,7 +48,14 @@
                         </script>
                     {% endif %}
                 {% endfor %}
-                <h3>{{object.title}}</h3>
+                <h3>{{object.title}}
+                <a onclick="AddOrRemoveFavourite({{object.pk}}, `{{object.title}}`)" id="add_to_favourite" class="btn btn-large tooltipped btn-floating red" data-position="right" data-tooltip="{% trans "Add to favourites" %}">
+                {% if favourite %}
+                    <i id="fav_icon" data-toggle="collapse" data-target="#mega-menu-dropdown" class="material-icons" style="vertical-align: middle; justify-content: center; align-items: center;">favorite</i></a></p>
+                {% else %}
+                    <i id="fav_icon" data-toggle="collapse" data-target="#mega-menu-dropdown" class="material-icons" style="vertical-align: middle; justify-content: center; align-items: center;">favorite_border</i></a></p>
+                {% endif %}
+                </h3>
                 <h6>{% trans "Posted at"%} {{object.get_date_posted_translated}}</h6>
                     <div class="carousel carousel-slider center">
                     {% if object.picture1.url != '/img/placeholder.png' %}
@@ -264,20 +263,56 @@ $(document).ready(function(){
 
           headline.innerText = '{% trans "Bidding finished!"%}';
           countdown.style.display = "none";
-          content.style.display = "block";
+          
 
           clearInterval(x);
         }
         //seconds
       }, 0)
   }());
+  function AddOrRemoveFavourite(pk, ptitle) {
+            fav_icon = document.getElementById("fav_icon");
+            fav_button = document.getElementById("add_to_favourite");
+            if(fav_icon.textContent === "favorite_border") {
+                fav_icon.textContent="favorite";
+                fav_button.dataset.tooltip = "{% trans "Remove from favourites" %}";
+                $.ajax({
+                    url : "/add_to_favourites/" + pk, // the endpoint
+                    type : "GET", // http method
+                    data : { pk : pk}, // data sent with the get request
+                    // handle a successful response
+                    success : function(json) {
+                        showSuccessMessage("{% trans "Product"%} " + ptitle + " {%trans "added to favourites" %}");
+                    },
+                    // handle a non-successful response
+                    error : function(xhr,errmsg,err) {
+                        showErrorMessage("Something went wrong...");
+                    }
+                });
+            } else {
+                fav_icon.textContent="favorite_border";
+                fav_button.dataset.tooltip = "{% trans "Add to favourites" %}";
+                $.ajax({
+                url : "/remove_from_favourites/" + pk, // the endpoint
+                type : "GET", // http method
+                data : { pk : pk}, // data sent with the get request
+                // handle a successful response
+                success : function(json) {
+                    showSuccessMessage("{% trans "Product"%} " + ptitle + " {%trans "removed from favourites" %}");
+                },
+                // handle a non-successful response
+                error : function(xhr,errmsg,err) {
+                    showErrorMessage("Something went wrong...");            }
+                });
+            } 
+        };
 
-var carousel = $('.carousel.carousel-slider').carousel();
-// Disable all swipping on carousel
-if (typeof window.ontouchstart !== 'undefined') {
-    carousel.off('touchstart.carousel');
-}
-carousel.off('mousedown.carousel');
+    var carousel = $('.carousel.carousel-slider').carousel();
+    // Disable all swipping on carousel
+    if (typeof window.ontouchstart !== 'undefined') {
+        carousel.off('touchstart.carousel');
+    }
+    carousel.off('mousedown.carousel');
 </script>
 
 

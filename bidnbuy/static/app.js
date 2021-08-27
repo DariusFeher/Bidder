@@ -31,3 +31,12 @@ function toggle_field(fieldNo) {
         isHidden[fieldNo - 1] = false;
     }
 }
+
+
+function showSuccessMessage(msg) {
+    M.toast({html: '<h5><i class="small material-icons">check_circle</i>  ' + msg + '</h5>', classes: 'green', displayLength: '4000'});
+};
+function showErrorMessage(msg) {
+    M.toast({html: '<h5><i class="small material-icons">report_problem</i>  ' + msg + '</h5>', classes: 'red', displayLength: '4000'});
+};
+        

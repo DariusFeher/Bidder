@@ -1,12 +1,12 @@
 import calendar
 from datetime import datetime, timedelta, timezone
+from itertools import product
 from django.db import models
 from django.shortcuts import reverse
 from django.utils.translation import get_language
 from django.utils.translation import gettext as _
 from phonenumber_field.modelfields import PhoneNumberField
 from places.fields import PlacesField
-from requests import request
 from users.models import Account
 
 

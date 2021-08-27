@@ -25,6 +25,7 @@ from .views import homePage
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
+    path('', include("favourites.urls")),
     path('', homePage, name='home'),
     path('', include("users.urls")),
     path('', include("products.urls")),

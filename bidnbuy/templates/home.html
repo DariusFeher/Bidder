@@ -4,25 +4,88 @@
 {% load materializecss %}
 {% block content %}
 <head>
-    <title>Bidder</title>
+    <title>Bidder | {{page_title}} </title>
     <!-- Compiled and minified CSS -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const gallery = document.querySelectorAll(".materialboxed");
-        M.Materialbox.init(gallery,{});
-        
-    });
-</script>
-<link rel="stylesheet" href="{% static 'style.css' %}">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const gallery = document.querySelectorAll(".materialboxed");
+            M.Materialbox.init(gallery,{});
+            
+        });
+    </script>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="{% static 'app.js' %}"></script>
 </head>
 <body style="background-color: #3f6068;">
     <canvas id="canvas"></canvas>
     <div class="container">
-        <h2 style="text-align: center; color: white;">{% trans "Available products" %} </h2>
+        <h2 style="text-align: center; color: white;"> {{title}} </h2>
+        <div class="wrapper">
+            <!-- Modal -->
+            <div id="modal1" class="modal modal-fixed-footer" style="width: 80%; overflow: scroll !important;">
+                <div class="modal-content" style=" overflow: scroll !important; -webkit-overflow-scrolling: touch;">
+                    <h4 style="text-align: center;">{% trans "Advanced Search" %}</h4>
+                    <br>
+                    <form id="id_search_form" class="mb-3 mt-3" method="POST" style="width: 80%; margin: auto;">
+                        {% csrf_token %}
+                        <div class="input-group mb-3" style="width: 90%;">
+                            {{searchForm.search_term|materializecss:'icon=search'}}<br>
+                        </div>
+                        {% if title != "Wishlist products" and title != "Produse favorite" %}
+                            <div class="input-group mb-3">
+                                {{searchForm.seller|materializecss:'icon=person'}}<br>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="input-group mb-3">
+                            {{searchForm.condition|materializecss:'icon=chevron_right'}}<br>
+                        </div>
+                        <div class="input-group mb-3">
+                            {{searchForm.starting_price|materializecss:'icon=attach_money'}}<br>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">perm_contact_calendar</i>
+                                <input type="text" name="end_date" class="validate invalidate datepicker" required id="id_end_date" placeholder="yyyy-mm-dd" ></input>
+                                <label class for="id_end_date">{% trans 'End date' %}</label>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="input-group mb-3 mt-3">
+                            {{searchForm.location|materializecss:'icon=location_on'}}<br>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="form_submit()" type="submit" class="modal-close btn waves-light waves-effect waves-green">Search</button>
+                    <a class="modal-close waves-effect waves-green btn-flat">Close</a>
+                </div>
+            </div>
+            <form method="POST" style="width: 100%; margin: auto;">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <div style="display: inline-block; width: 60%;">
+                        <div class="searchBar">
+                            <input id="id_search_term" type="text" name="search_term" placeholder="{% trans "Search products" %}..." value="" />
+                            <button id="searchQuerySubmit" type="submit" name="searchQuerySubmit">
+                                <i class="material-icons right" style="padding: 5%;">search</i>
+                            </button>
+                        </div>
+                    </div>
+                    <div style="display: inline-block; margin-left: 2%; width: 25%;">
+                        <a class="waves-effect waves-light btn modal-trigger" href="#modal1"><i class="material-icons left">launch</i>{% trans "Advanced Search" %}</a>
+                    </div>
+                    <div style="display: inline-block; width: 5%;">
+                        <button type="submit" class="btn-floating waves-effect waves-light red btn tooltipped" data-position="right" data-tooltip="{% trans "Reset filters" %}" style="margin-top: 5%;"><i class="material-icons left">restart_alt</i></button>
+                    </div>
+                </div>
+            </form>
+    </div>
         <div class="products" id="main-container">
+            {% if page_obj %}
             <script>
                 var cards = 0;
                 var main_container = $("#main-container");
@@ -38,7 +101,11 @@
                                         '<img src="{{product.picture1.url}}" class="materialboxed" style="width: 100%;  height: 15vw; object-fit: cover;">' +
                                         '<a class="btn tooltipped teal btn-floating halfway-fab pulse activator" style="display: inline;" data-position="top" data-tooltip="' + "{% trans "Find out more information" %}" + '"><i class="material-icons">info</i></a>' +
                                     '</div>' +
-                                    '<div class="card-content">' + '<p class="card-title" style="font-weight: bold;">{{product.title}} <button class="btn tooltipped btn-floating red" type="submit" data-position="right" data-tooltip="' + "{% trans "Add to favourite" %}" + '"><i class="material-icons">favorite_border</i></button></p> ' +
+                                    '<div class="card-content">' + '<p class="card-title" style="font-weight: bold;">{{product.title}} ' +
+                                    '<a onclick="AddOrRemoveFavourite({{product.pk}}, `{{product.title}}`)" id="add_to_favourite' + {{product.pk}} + '" class="btn tooltipped btn-floating red" data-position="right" data-tooltip="' + "{% trans "Add to favourites" %}" + '">'+
+                                    '{% if product in favourites_list %}<i id="fav_icon'+ {{product.pk}} + '" data-toggle="collapse" data-target="#mega-menu-dropdown" class="material-icons" style="vertical-align: middle; justify-content: center; align-items: center;">favorite</i></a></p>' +
+                                    '{% else %} <i id="fav_icon'+ {{product.pk}} + '" data-toggle="collapse" data-target="#mega-menu-dropdown" class="material-icons" style="vertical-align: middle; justify-content: center; align-items: center;">favorite_border</i></a></p>'+
+                                    '{% endif %}' +
                                     '<p> <span class="material-icons" style="color: red;">hourglass_bottom</span>{% trans "Auction ends on "%} {{product.get_end_date_translated}} </p>'+
                                     '<p style="margin-top: 2%;"> <span class="material-icons" style="color: teal;">location_on</span> {{product.location.place}} </p>'+
                                     '<p style="font-size: x-large; margin-top: 3%; display: inline;"><span class="material-icons" style="color: teal;">paid</span> {% trans "Last bid:" %} <p style="font-size: x-large; margin-top: 3%; display: inline; color: red;">{{product.last_bid}} LEI </p></p></div>'+
@@ -56,32 +123,104 @@
                 {% endfor %}
             </script>
            <ul class="pagination center" style="padding-bottom: 3%;">
-            {% if page_obj.has_previous %}
-                <li><a href="?page={{page_obj.previous_page_number}}"><i class="material-icons">chevron_left</i></a></li>
-            {% else %}
-                <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-            {% endif %}
-            {% for i in range %}
-                {% if i == page_obj.number %}
-                    <li class="active teal"><a href="?page={{page_obj.number}}">{{page_obj.number}}</a></li>
+                {% if page_obj.has_previous %}
+                    <li><a href="?page={{page_obj.previous_page_number}}"><i class="material-icons">chevron_left</i></a></li>
                 {% else %}
-                    <li class="waves-effect"><a href="?page={{i}}">{{i}}</a></li>
+                    <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
                 {% endif %}
-            {% endfor %}
-            {% if page_obj.has_next %}
-                <li class="waves-effect"><a href="?page={{page_obj.next_page_number}}"><i class="material-icons">chevron_right</i></a></li>
+                {% for i in range %}
+                    {% if i == page_obj.number %}
+                        <li class="active teal"><a href="?page={{page_obj.number}}">{{page_obj.number}}</a></li>
+                    {% else %}
+                        <li class="waves-effect"><a href="?page={{i}}">{{i}}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <li class="waves-effect"><a href="?page={{page_obj.next_page_number}}"><i class="material-icons">chevron_right</i></a></li>
+                {% else %}
+                    <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                {% endif %}
+            </ul>
             {% else %}
-                <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                <div>
+                    <h3 style="padding: 5%;">{{no_items_msg}}</h3>
+                </div>
             {% endif %}
-        </ul>
         </div>
     </div>
 </body>
 {% block script %}
     <script>
-    $(document).ready(function(){
-        $('.tooltipped').tooltip();
-    });
+        $(document).ready(function(){
+            $('.tooltipped').tooltip();
+            $('.modal').modal();
+            $('select').formSelect();
+            $("input#id_end_date").attr({
+                "class" : "datepicker",
+            });
+            $("input#id_starting_price").attr({
+                "min" : "1",
+            });
+            $('.datepicker').datepicker({'format': 'yyyy-mm-dd'});
+            
+        });
+        $(function(){
+            if ("{{title}}" != "Your products" && "{{title}}" != "Anunturile tale") {
+                var dtToday = new Date();
+                $('.datepicker').datepicker({minDate: dtToday,
+                                            format: 'yyyy-mm-dd',
+                                            container: 'body'});
+            } else {
+                $('.datepicker').datepicker({format: 'yyyy-mm-dd',
+                                            container: 'body'});
+            }
+        });
+        $(function(){
+            end_date_value = "{{searchForm.end_date.value}}";
+            if (end_date_value != "" && end_date_value != "None") {
+                $("#id_end_date").attr({"value": end_date_value});
+            }
+        });
+        function form_submit() {
+            document.getElementById("id_search_form").submit();
+        }
+        function AddOrRemoveFavourite(pk, ptitle) {
+            fav_icon = document.getElementById("fav_icon" + pk);
+            fav_button = document.getElementById("add_to_favourite" + pk);
+            console.log(fav_icon.textContent);
+            if(fav_icon.textContent === "favorite_border") {
+                fav_icon.textContent="favorite";
+                fav_button.dataset.tooltip = "{% trans "Remove from favourites" %}";
+                $.ajax({
+                    url : "/add_to_favourites/" + pk, // the endpoint
+                    type : "GET", // http method
+                    data : { pk : pk}, // data sent with the get request
+                    // handle a successful response
+                    success : function(json) {
+                        showSuccessMessage("{% trans "Product"%} " + ptitle + " {%trans "added to favourites" %}");
+                    },
+                    // handle a non-successful response
+                    error : function(xhr,errmsg,err) {
+                        showErrorMessage("Something went wrong...");
+                    }
+                });
+            } else {
+                fav_icon.textContent="favorite_border";
+                fav_button.dataset.tooltip = "{% trans "Add to favourites" %}";
+                $.ajax({
+                url : "/remove_from_favourites/" + pk, // the endpoint
+                type : "GET", // http method
+                data : { pk : pk}, // data sent with the get request
+                // handle a successful response
+                success : function(json) {
+                    showSuccessMessage("{% trans "Product"%} " + ptitle + " {%trans "removed from favourites" %}");
+                },
+                // handle a non-successful response
+                error : function(xhr,errmsg,err) {
+                    showErrorMessage("Something went wrong...");            }
+                });
+            } 
+        };
     </script>
 {% endblock script %}
 {% endblock content %}

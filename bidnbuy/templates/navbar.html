@@ -1,60 +1,11 @@
 {% load i18n %}
-{% comment %} <body>
-    
-    <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-suspend" id="base-navbar">
-        <a class="navbar-brand" href="/" style="font-family: 'Lobster', cursive; margin-left: 1%;"> Bidder</a>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="mr-auto">
-                    <li class="nav-item dropdown" style="float:left;">
-                        <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #000;">{% trans "Language" %}</a>
-                            <form action="{% url 'set_language' %}" method="post" id="lang_form">
-                                {% csrf_token %}
-                                <input name="next" type="hidden" value="{{ redirect_to }}" />
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    {% get_current_language as LANGUAGE_CODE %}
-                                    {% get_available_languages as LANGUAGES %}
-                                    {% get_language_info_list for LANGUAGES as languages %}
-                                    {% for language in languages %}
-                                    <li>
-                                        <button type="submit" name="language" value="{{ language.code }}" class="{% if language.code == LANGUAGE_CODE %}selected{% else%}demo-text-black{% endif %} dropdown-item">
-                                            {% if language.code == LANGUAGE_CODE %}&#10003;{% else %}&nbsp;&nbsp;&nbsp;{% endif %}
-                                            <img src="/static/img/flags/{{ language.code }}.png">
-                                                {{ language.name_translated }}
-                                        </button>
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                            </form>
-                        </a>
-                    </li>
-                    <!--/ dropdown -->
-                </ul>
-                {% if request.user.is_authenticated %}
-                        <li class="nav-item dropdown" style="float: right;">
-                            <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"> {{ request.user.username }}</i></a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li>
-                                        <a href="{% url 'logout' %}" style="color: black;">{% trans 'Logout' %}  <i class="fa fa-sign-out"></i></a>
-                                    </li>   
-                                </ul>
-                            </a>
-                        </li>
-                    {% endif %}
-            </div>
-       
-    </nav>
-    <!--/ navbar -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-</body> {% endcomment %}
 <body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <ul id="dropdown-user" class="dropdown-content">
     {% if request.user.is_authenticated %}
-        <li>
-            <a href="{% url 'logout' %}" style="color: black; display: inline; margin:0;">{% trans 'Logout' %}</a>
-        </li>
+        <li><a href="/products/myproducts">{% trans "My ads" %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'logout' %}">{% trans 'Logout' %}</a></li>
     {% endif %}
 </ul>
 <ul id="dropdown-language" class="dropdown-content">
@@ -82,7 +33,10 @@
    <div class="nav-wrapper">
         <a href="/" class="brand-logo" style="font-family: 'Lobster', cursive; margin-left: 1%; color: black;"> Bidder</a>
         <ul class="right hide-on-med-and-down">
-            <li style="height: 100%;"><a href="/products/new" class="waves-effect waves-light btn teal" style="top:25%; color: white;">{% trans "CREATE NEW AD" %}</a></li>
+            {% if request.user.is_authenticated %}
+                <li style="height: 100%;"><a href="/products/new" class="waves-effect waves-light btn teal" style="top:25%; color: white;">{% trans "CREATE NEW AD" %}</a></li>
+                <li style="height: 100%;"><a href="/products/mywishlist" style="color: black;">{% trans "Wishlist" %}</a></li>
+            {% endif %}
             <!-- Dropdown Trigger -->
             <li><a class="dropdown-trigger" href="#!" data-target="dropdown-language" style="color: #000;">{% trans 'Language' %}<i class="material-icons right">arrow_drop_down</i></a></li>
             {% if request.user.is_authenticated %}
