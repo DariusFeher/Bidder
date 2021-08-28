@@ -6,8 +6,11 @@
 <head>
     {% load static %}
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
         var addPicture = function(id, url) {
             var img_zone = $("#preview-pictures-zone");
@@ -26,6 +29,7 @@
             img_zone.append(preview_img);
         }
     </script>
+    <script src="{% static 'app.js' %}"></script>
     <style>
         input[type="file"] {
             display: none;
@@ -45,7 +49,9 @@
                     <h1 id="form-title">{% trans "New product" %}</h1>
             </div>
             {% for non_field_error in form.non_field_errors %}
-                <p class="error-messages">{{non_field_error}}</p>
+                <script>
+                    showErrorMessage("{{non_field_error}}");
+                </script>
             {% endfor %}
             <form enctype='multipart/form-data' class="justify-content-center" method="POST" style="width: 100%;">
                     {% csrf_token %}

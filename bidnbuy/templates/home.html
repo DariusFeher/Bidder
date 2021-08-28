@@ -20,6 +20,11 @@
     <script src="{% static 'app.js' %}"></script>
 </head>
 <body style="background-color: #3f6068;">
+    {% for message in messages %}
+        <script>
+            showSuccessMessage("{{message}}");
+        </script>
+    {% endfor %}
     <canvas id="canvas"></canvas>
     <div class="container">
         <h2 style="text-align: center; color: white;"> {{title}} </h2>
@@ -60,8 +65,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="form_submit()" type="submit" class="modal-close btn waves-light waves-effect waves-green">Search</button>
-                    <a class="modal-close waves-effect waves-green btn-flat">Close</a>
+                    <button onclick="form_submit()" type="submit" class="modal-close btn waves-light waves-effect waves-green">{% trans "Search" %}</button>
+                    <a class="modal-close waves-effect waves-green btn-flat">{% trans "Close" %}</a>
                 </div>
             </div>
             <form method="POST" style="width: 100%; margin: auto;">
@@ -95,6 +100,16 @@
                     }
                     var row_id = "main-container" + parseInt(cards / 3);
                     var container = $("#" + row_id);
+                    var currency;
+                    if ("{{product.currency}}" == '1') {
+                        currency = 'LEI';
+                    } else if ("{{product.currency}}" == '2') {
+                        currency = 'USD (US$)';
+                    } else if ("{{product.currency}}" == '3') {
+                        currency = 'EUR (€)';
+                    } else {
+                        currency = 'GBP (£)';
+                    }
                     card = '<div class="col l4 m4 s12">' +
                                 '<div class="card sticky-action">' +
                                     '<div class="card-image">' +
@@ -108,7 +123,7 @@
                                     '{% endif %}' +
                                     '<p> <span class="material-icons" style="color: red;">hourglass_bottom</span>{% trans "Auction ends on "%} {{product.get_end_date_translated}} </p>'+
                                     '<p style="margin-top: 2%;"> <span class="material-icons" style="color: teal;">location_on</span> {{product.location.place}} </p>'+
-                                    '<p style="font-size: x-large; margin-top: 3%; display: inline;"><span class="material-icons" style="color: teal;">paid</span> {% trans "Last bid:" %} <p style="font-size: x-large; margin-top: 3%; display: inline; color: red;">{{product.last_bid}} LEI </p></p></div>'+
+                                    '<p style="font-size: x-large; margin-top: 3%; display: inline;"><span class="material-icons" style="color: teal;">paid</span> {% trans "Last bid:" %} <p style="font-size: x-large; margin-top: 3%; display: inline; color: red;">{{product.last_bid}} ' + currency + ' </p></p></div>'+
                                     '<div class="card-reveal">' +
                                         '<span class="card-title">{{product.title}}<i class="material-icons right">close</i></span>' +
                                         '<p style="white-space: pre-line;">' + `{{product.description | safe}}` + '</p>' +
@@ -201,7 +216,7 @@
                     },
                     // handle a non-successful response
                     error : function(xhr,errmsg,err) {
-                        showErrorMessage("Something went wrong...");
+                        showErrorMessage("{% trans "Something went wrong..."%}");
                     }
                 });
             } else {

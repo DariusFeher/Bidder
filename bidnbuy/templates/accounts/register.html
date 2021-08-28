@@ -6,7 +6,20 @@
 {% block content %}
 <head>
     {% load static %}
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="{% static 'app.js' %}"></script>
+     <style>
+        .help-block{
+            color: #ff0000 !important;
+        }
+        .errorlist {
+            color: red;
+        }
+    </style>
 </head>
 <div class="container">
     <div class="container h-100">
@@ -14,13 +27,15 @@
         <div class="d-flex justify-content-center h-100">
             <div class="user_card">
                 <div class="d-flex justify-content-center mt-3">
-                    <h1 id="form-title" style="color: black;">{% trans "Register Account" %}</h1>
+                    <h3 id="form-title" style="color: black;">{% trans "Register Account" %}</h3>
                 </div>
                 <div class="d-flex justify-content-center form_container">
                     <form method="POST" action="" style="width: 80%;">
                         {% csrf_token %}
                         {% for non_field_error in form.non_field_errors %}
-                            <p class="error-messages">{{non_field_error}}</p>
+                            <script>
+                                showErrorMessage("{{non_field_error}}");
+                            </script>
                         {% endfor %}
                         <div class="input-group mb-3">
                             {{form.username|materializecss:'icon=person'}}<br>

@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load static %}
 {% load materializecss %}
 {% block title %}{{object.title}}{% endblock title %}
 {% block content %}
 
 <head>
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-    <!-- Compiled and minified JavaScript -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="{% static 'app.js' %}"></script>
     <style>
         .errorlist {
             color: red;

@@ -35,7 +35,7 @@ def homePage(request):
         else:
             products = Product.objects.all()
     if len(products):
-        products = products.filter(end_date__gte=datetime.datetime.now().date()).order_by("end_date")
+        products = products.filter(end_date__gt=datetime.datetime.now().date()).order_by("end_date")
     paginator = Paginator(products, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)

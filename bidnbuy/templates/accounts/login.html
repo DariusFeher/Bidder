@@ -8,6 +8,11 @@
 <head>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
     {% load static %}
+     <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="{% static 'app.js' %}"></script>
     <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
 </head>
@@ -18,7 +23,7 @@
         <div class="d-flex justify-content-center h-100">
             <div class="user_card">
                 <div class="d-flex justify-content-center mt-3">
-                    <h1 id="form-title" style="color: black; padding-top: 0%;">{% trans "Login" %}</h1>
+                    <h3 id="form-title" style="color: black; padding-top: 0%;">{% trans "Login" %}</h3>
                 </div>
                 <div class="d-flex justify-content-center form_container">
                     <form method="POST" action="" style="width: 80%;">
@@ -26,19 +31,23 @@
                         {% for message in messages %}
                             {% if message.tags == "error" %}
                                 <p class="error-messages">
-                                    {{message}}
-                                    {% if message.message == 'Something unexpected happened.\n' or message.message == 'Email is not verified. Please verify your email. Email not received? Check spam or ' or  message.message == 'A aparut o eroare.\n' or message.message == 'Email-ul nu e verificat. Va rugam sa verificati email-ul. Nu ati primit email-ul? Verificati folder-ul spam sau ' %}
+                                    <script>
+                                        showErrorMessage("{{message}}");
+                                    </script>
+                                    {% if message.message == 'Something unexpected happened.\n' or message.message == 'Email is not verified. Please verify your email.' or  message.message == 'A aparut o eroare.\n' or message.message == 'Email-ul nu e verificat. Va rugam sa verificati email-ul.' %}
                                         {% url 'resend_activation' as activationUrl %}
                                         {% with "<a href='/resend-link'>" as link_begin %}
                                         {% with "</a>" as link_end %}
-                                        {% blocktrans %}{{ link_begin }} Request a new activation link {{ link_end }}{% endblocktrans %}
+                                        {% blocktrans %}{{ link_begin }} Email not received? Check spam or Request a new activation link {{ link_end }}{% endblocktrans %}
                                         {% endwith %}
                                         {% endwith %}
                                     {% endif %}
                                 </p>
                             {% endif %}
                             {% if message.tags == "success" %}
-                                <p class="success-messages">{{message}}</p>
+                                <script>
+                                    showSuccessMessage("{{message}}");
+                                </script>
                             {% endif %}
                         {% endfor %}
                         <div class="input-group mb-3">
