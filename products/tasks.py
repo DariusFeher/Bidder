@@ -5,14 +5,16 @@ from auctions.utils import get_no_bidders_product, get_no_bids_product
 from celery import shared_task
 from django.conf import settings
 from django.contrib.sites.models import Site
-from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
 from django.utils.translation import gettext as _
+from django.utils import translation
+from django.utils.translation import get_language
 
 
 @shared_task
-def send_bidding_confirmation(pk_user, pk_product):
+def send_bidding_confirmation(language, pk_user, pk_product):
+    translation.activate(language)
     user = Account.objects.get(pk=pk_user)
     product = Product.objects.get(pk=pk_product)
     current_site = Site.objects.get_current().domain
@@ -21,8 +23,8 @@ def send_bidding_confirmation(pk_user, pk_product):
         'user': user.username,
         'product': product,
         'domain': str(current_site).rstrip("/"),
-        'bidders': get_no_bidders_product(product) - 1,
-        'bids': get_no_bids_product(product) - 1,
+        'bidders': get_no_bidders_product(product),
+        'bids': get_no_bids_product(product),
     }
     content = template.render(context)
     email_subject = (user.username + _(', your bidding is the highest one at the moment!'))
@@ -35,8 +37,9 @@ def send_bidding_confirmation(pk_user, pk_product):
     return "Bidding confirmation email sent"
 
 @shared_task
-def send_outbidding_email(pk_product, pk_last_auction):
+def send_outbidding_email(language, pk_product, pk_last_auction):
     product = Product.objects.get(pk=pk_product)
+    translation.activate(language)
     last_auction = Auction.objects.get(pk=pk_last_auction)
     current_site = Site.objects.get_current().domain
     template = get_template('auctions/outbidding_information.html')
@@ -46,8 +49,8 @@ def send_outbidding_email(pk_product, pk_last_auction):
         'user': username,
         'product': product,
         'domain': str(current_site).rstrip("/"),
-        'bidders': get_no_bidders_product(product) - 1,
-        'bids': get_no_bids_product(product) - 1,
+        'bidders': get_no_bidders_product(product),
+        'bids': get_no_bids_product(product),
     }
     content = template.render(context)
     email_subject = (_('Outbid! You need to raise your bid for ') + product.title)

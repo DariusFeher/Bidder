@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-16 10:34+0000\n"
+"POT-Creation-Date: 2021-08-28 09:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,79 +19,75 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
 "2:1));\n"
 
-#: users/forms.py:12
+#: forms.py:12
 msgid "Username"
 msgstr "Nume de utilizator"
 
-#: users/forms.py:13
+#: forms.py:13
 msgid "Email"
 msgstr "Email"
 
-#: users/forms.py:14 users/forms.py:43
+#: forms.py:14 forms.py:43
 msgid "Password"
 msgstr "Parola"
 
-#: users/forms.py:18
+#: forms.py:18
 msgid "Re-enter Password"
 msgstr "Reintrodu parola"
 
-#: users/forms.py:29
+#: forms.py:29
 msgid "The username should contain at least 5 characters."
 msgstr "Numele de utilizator trebuie sa contina cel putin 5 caractere."
 
-#: users/forms.py:36
+#: forms.py:36
 msgid "Account with this Email already exists."
 msgstr "Exista deja un cont asociat acestui email."
 
-#: users/forms.py:42
+#: forms.py:42
 msgid "Username or Email"
 msgstr "Nume de utilizator sau Email"
 
-#: users/views.py:27
+#: tasks.py:18
 msgid "Please activate your account!"
-msgstr ", va rugam sa verificati email-ul si sa va activati contul!"
+msgstr "Va rugam sa va verificati email-ul si sa va activati contul!"
 
-#: users/views.py:42
+#: tasks.py:36
 msgid "Password reset for user "
 msgstr "Resetarea parolei pentru utilizatorul "
 
-#: users/views.py:66
+#: views.py:37
 msgid ", please verify your email and activate your account!"
 msgstr ", va rugam sa verificati email-ul si sa va activati contul!"
 
-#: users/views.py:69
+#: views.py:40
 msgid "Something went wrong..."
 msgstr "A aparut o eroare..."
 
-#: users/views.py:82
-msgid ""
-"Email is not verified. Please verify your email. Email not received? Check "
-"spam or "
-msgstr ""
-"Email-ul nu e verificat. Va rugam sa verificati email-ul. Nu ati primit "
-"email-ul? Verificati folder-ul spam sau "
+#: views.py:53
+msgid "Email is not verified. Please verify your email."
+msgstr "Email-ul nu e verificat. Va rugam sa verificati email-ul."
 
-#: users/views.py:89
+#: views.py:60
 msgid "Incorrect Username or Password!"
 msgstr "Nume de utilizator sau parola incorecta"
 
-#: users/views.py:95
+#: views.py:66
 msgid "You have successfully signed out!"
 msgstr "V-ați deconectat cu succes!"
 
-#: users/views.py:108
+#: views.py:79
 msgid "Email verified, you can now login!"
 msgstr "Email verificat cu succes, acum va puteti autentifica!"
 
-#: users/views.py:111
+#: views.py:82
 msgid "Email is already verified!"
 msgstr "Email-ul este deja verificat!"
 
-#: users/views.py:113
+#: views.py:84
 msgid "Something unexpected happened.\n"
 msgstr "A aparut o eroare.\n"
 
-#: users/views.py:126
+#: views.py:97
 msgid ""
 "You will receive a new activation link if there is an account associated "
 "with this email."
@@ -99,7 +95,7 @@ msgstr ""
 "Veti primi un nou link de activare in cazul in care exista un cont asociat "
 "email-ului introdus."
 
-#: users/views.py:141
+#: views.py:112
 msgid ""
 "You will receive a link to reset your password if there is an account "
 "associated with this email."
@@ -107,14 +103,14 @@ msgstr ""
 "Veti primi un link de resetare a parolei in cazul in care exista un cont "
 "asociat email-ului introdus."
 
-#: users/views.py:160
+#: views.py:131
 msgid "Password changed, you can now login!"
 msgstr "Parola schimbata cu succes, acum va puteti autentifica!"
 
-#: users/views.py:163
+#: views.py:134
 msgid "Something went wrong."
 msgstr "A aparut o eroare."
 
-#: users/views.py:165
+#: views.py:136
 msgid "Something unexpected happened."
 msgstr "A aparut o eroare."

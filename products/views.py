@@ -1,31 +1,18 @@
-from bidnbuy.utils import filter_products
 import datetime
-from math import prod
-import os
 from datetime import timedelta
-from json import JSONEncoder
 
 import pytz
 from auctions.forms import AuctionForm
 from auctions.models import Auction
 from auctions.utils import (get_bidders_product, get_no_bidders_product,
                             get_no_bids_product)
-from django.conf import settings
+from bidnbuy.utils import filter_products
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import NON_FIELD_ERRORS
-from django.core.mail import EmailMessage
 from django.core.paginator import Paginator
-from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect, render
-from django.template import Context
-from django.template.loader import get_template, render_to_string
 from django.utils import timezone
-from django.utils.encoding import force_bytes
-from django.utils.html import strip_tags
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.translation import gettext as _
 from favourites.models import Favourite
 from places.fields import PlacesField
@@ -34,6 +21,7 @@ from users.models import Account
 from .forms import ProductForm, SearchForm
 from .models import Product
 from .tasks import send_bidding_confirmation, send_outbidding_email
+from .utils import handle_file, handle_uploaded_file
 
 # Create your views here.
 conditions = {
@@ -95,25 +83,6 @@ def newProduct(request):
             form.add_error(NON_FIELD_ERRORS, _("Something went wrong..."))
     context = {'form': form}
     return render(request, 'products/new_product.html', context)
-
-def handle_uploaded_file(f):
-    if f is not None:
-        with open('static/img/' + str(f), 'wb+') as destination:
-            for chunk in f.chunks():
-                destination.write(chunk)
-
-
-def handle_file(new_f, old_f, delete):
-    picture = new_f
-    if new_f != old_f:
-        if old_f and os.path.exists('static/img/' + str(old_f)):
-            os.remove('static/img/' + str(old_f))
-            old_f = None
-        handle_uploaded_file(new_f)
-    if delete and old_f and os.path.exists('static/img/' + str(old_f)):
-        picture = None
-        os.remove('static/img/' + str(old_f))
-    return picture
 
 @login_required(login_url='/login/')
 def editProduct(request, pk):
@@ -210,11 +179,11 @@ def detailPage(request, pk):
             product = get_object_or_404(Product, pk=pk)
             context = {'object': product}
             user = Account.objects.get(email=request.user)
-            send_bidding_confirmation.delay(user.pk, product.pk)
+            send_bidding_confirmation.delay(request.LANGUAGE_CODE, user.pk, product.pk)
             messages.success(request,  _('Your bid has been recorded.'))
             last_auction = Auction.objects.filter(product=product).order_by('-bid_time')
             if len(last_auction) >= 2 and last_auction[1].bidder.email != request.user.email:
-                send_outbidding_email.delay(product.pk, last_auction[1].pk)
+                send_outbidding_email.delay(request.LANGUAGE_CODE, product.pk, last_auction[1].pk)
         else:
             if timezone.now() + timedelta(hours=3) > product.end_date:
                 messages.error(request,  _('Auction has finished!'))

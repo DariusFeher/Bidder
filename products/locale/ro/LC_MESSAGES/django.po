@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-16 10:34+0000\n"
+"POT-Creation-Date: 2021-08-28 10:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,35 +19,35 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
 "2:1));\n"
 
-#: products/forms.py:16 products/models.py:19 products/views.py:25
+#: forms.py:16 models.py:21 views.py:44
 msgid "LEI"
 msgstr "LEI"
 
-#: products/forms.py:17 products/models.py:20 products/views.py:26
+#: forms.py:17 models.py:22 views.py:45
 msgid "USD (US$)"
 msgstr "USD (US$)"
 
-#: products/forms.py:18 products/models.py:21 products/views.py:27
+#: forms.py:18 models.py:23 views.py:46
 msgid "EUR (€)"
 msgstr "EURO (€)"
 
-#: products/forms.py:19 products/models.py:22 products/views.py:28
+#: forms.py:19 models.py:24 views.py:47
 msgid "GBP (£)"
 msgstr "LIRE (£)"
 
-#: products/forms.py:23 products/models.py:14 products/views.py:21
+#: forms.py:23 forms.py:89 models.py:16 views.py:40
 msgid "New"
 msgstr "Nou"
 
-#: products/forms.py:24 products/models.py:15 products/views.py:22
+#: forms.py:24 forms.py:90 models.py:17 views.py:41
 msgid "Used"
 msgstr "Folosit"
 
-#: products/forms.py:28
+#: forms.py:29
 msgid "Title"
 msgstr "Titlu"
 
-#: products/forms.py:28
+#: forms.py:29
 msgid ""
 "Please set a suggestive title for your product which contains at least 5 "
 "characters"
@@ -55,109 +55,176 @@ msgstr ""
 "Va rugam sa setati un titlu sugestiv pentru produsul dumneavostra, care "
 "contine cel putin 5 caractere"
 
-#: products/forms.py:29
+#: forms.py:30
 msgid "Please describe the product you are selling"
 msgstr "Va rugam descrieti produsul pe care il vindeti"
 
-#: products/forms.py:29
+#: forms.py:30
 msgid "Description"
 msgstr "Descriere"
 
-#: products/forms.py:30
+#: forms.py:31 forms.py:105
 msgid "Condition"
 msgstr "Stare"
 
-#: products/forms.py:31
+#: forms.py:32
 msgid "Starting price"
 msgstr "Pret de pornire al licitatiei"
 
-#: products/forms.py:31
+#: forms.py:32
 msgid "Please set the product's starting price"
 msgstr "Va rugam sa setati pretul de pornire al licitatiei"
 
-#: products/forms.py:33
+#: forms.py:34
 msgid "Please choose an ending date and time for the bidding"
 msgstr "Va rugam sa alegeti data si ora incheierii licitatiei"
 
-#: products/forms.py:34
+#: forms.py:34
+msgid "End hour"
+msgstr "Ora incheierii"
+
+#: forms.py:35
 msgid "Main image"
 msgstr "Imagine principala"
 
-#: products/forms.py:34
+#: forms.py:35
 msgid "Please set a main image for your product"
 msgstr "Va rugam sa alegeti o imagine principala a anuntului"
 
-#: products/forms.py:35
+#: forms.py:36
 msgid "Image 2"
 msgstr "Imagine 2"
 
-#: products/forms.py:36
+#: forms.py:37
 msgid "Image 3"
 msgstr "Imagine 3"
 
-#: products/forms.py:37
+#: forms.py:38
 msgid "Image 4"
 msgstr "Imagine 4"
 
-#: products/forms.py:38
+#: forms.py:39
 msgid "Image 5"
 msgstr "Imagine 5"
 
-#: products/forms.py:39
+#: forms.py:40
 msgid "Image 6"
 msgstr "Imagine 6"
 
-#: products/forms.py:46
+#: forms.py:47
 msgid "Currency"
 msgstr "Moneda"
 
-#: products/forms.py:47
+#: forms.py:48
 msgid "Phone number"
 msgstr "Numar de telefon"
 
-#: products/forms.py:47
+#: forms.py:48
 msgid "Please enter a phone number (e.g. +40792011221)."
 msgstr ""
 "Va rugam sa introduceti un numar de telefon (de exemplu: +40792011221)."
 
-#: products/forms.py:48
+#: forms.py:49
 msgid "Enter a valid phone number (e.g. +40792011221)."
 msgstr "Introduceti un numar de telefon valid (de exemplu: +40792011221)."
 
-#: products/forms.py:61
+#: forms.py:62
 msgid "The title should contain at least 5 characters."
 msgstr "Titlul trebuie sa contina cel putin 5 caractere."
 
-#: products/forms.py:67
+#: forms.py:68
 msgid "The description should contain at least 5 characters."
 msgstr "Descrierea trebuie sa contina cel putin 5 caractere"
 
-#: products/forms.py:73
+#: forms.py:74
 msgid "The starting price should be greater than or equal to 0."
 msgstr "Pretul de pornire trebuie sa fie mai mare sau egal cu 0."
 
-#: products/forms.py:83
+#: forms.py:82
 msgid "The date and time cannot be in the past."
 msgstr "Data si ora nu pot fi in trecut."
 
-#: products/models.py:59
+#: forms.py:88
+msgid "Choose condition..."
+msgstr "Alege starea produsului..."
+
+#: forms.py:93
+msgid "Choose seller..."
+msgstr "Alege vanzatorul..."
+
+#: forms.py:103
+msgid "Search term..."
+msgstr "Anuntul cautat..."
+
+#: forms.py:104
+msgid "Seller"
+msgstr "Vanzator"
+
+#: forms.py:106
+msgid "Starting price should be less than..."
+msgstr "Pretul de pornire trebuie sa fie mai mic decat..."
+
+#: forms.py:107
+msgid "The auction should end no later than..."
+msgstr "Licitatia ar trebui sa se incheie cel tarziu..."
+
+#: forms.py:108
+msgid "Choose the city, e.g. Bucuresti, Romania"
+msgstr "Alege orasul, e.x. Bucuresti, Romania"
+
+#: models.py:62
 msgid "at"
 msgstr "la"
 
-#: products/views.py:79 products/views.py:161
+#: tasks.py:27
+msgid ", your bidding is the highest one at the moment!"
+msgstr ", oferta dumneavoastra este cea mai mare în acest moment!"
+
+#: tasks.py:52
+msgid "Outbid! You need to raise your bid for "
+msgstr ""
+"Cineva a licitat mai mult decat dumneavoastra!Trebuie sa va măriți suma "
+"licitata pentru "
+
+#: views.py:95 views.py:175 views.py:222
 msgid "Something went wrong..."
 msgstr "A aparut o eroare..."
 
-#: products/views.py:174
+#: views.py:188
 msgid "Product "
 msgstr "Produsul "
 
-#: products/views.py:174
+#: views.py:188
 msgid " deleted successfully"
 msgstr " a fost sters cu succes."
 
-#~ msgid "End hour"
-#~ msgstr "Ora incheierii"
+#: views.py:214
+msgid "Your bid has been recorded."
+msgstr "Oferta dumneavoastra a fost inregistrata."
+
+#: views.py:220
+msgid "Auction has finished!"
+msgstr "Licitatia s-a finalizat!"
+
+#: views.py:251
+msgid "You currently have no ads..."
+msgstr "Momentan nu ai niciun anunt..."
+
+#: views.py:253 views.py:285
+msgid "There are no products matching your search..."
+msgstr "Nu sunt produse care se potrivesc căutării dvs..."
+
+#: views.py:265
+msgid "Your products"
+msgstr "Produsele tale"
+
+#: views.py:283
+msgid "You currently have no favourite ads..."
+msgstr "Momentan nu ai niciun anunt favorit..."
+
+#: views.py:295
+msgid "Wishlist products"
+msgstr "Produse preferate"
 
 #~ msgid "%d %B %Y at %I:%M %p"
 #~ msgstr "%d %B %Y la %I:%M %p"

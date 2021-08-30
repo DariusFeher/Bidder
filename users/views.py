@@ -20,37 +20,8 @@ from .forms import (CreateUserForm, LoginUserForm,
                     RequestActivationLinkOrPassword, ResetPasswordForm)
 from .models import Account
 from .utils import generate_token
+from .tasks import send_activation_email, send_reset_password_email
 
-
-def send_activation_email(request, user):
-    current_site = get_current_site(request)
-    email_subject = _('Please activate your account!')
-    email_body = render_to_string('accounts/activate.html', {
-        'user': user.username,
-        'domain': str(current_site).rstrip("/"),
-        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-        'token': generate_token.make_token(user)
-    })
-    email = EmailMessage(subject=email_subject,
-                body=email_body,
-                from_email=settings.EMAIL_FROM_USER,
-                to=[user.email])
-    email.send()
-
-def send_reset_password_email(request, user):
-    current_site = get_current_site(request)
-    email_subject = _('Password reset for user ') + user.username
-    email_body = render_to_string('accounts/password_reset_email.html', {
-        'user': user.username,
-        'domain': str(current_site).rstrip("/"),
-        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-        'token': generate_token.make_token(user)
-    })
-    email = EmailMessage(subject=email_subject,
-                body=email_body,
-                from_email=settings.EMAIL_FROM_USER,
-                to=[user.email])
-    email.send()
 
 def registerPage(request):
     if request.user.is_authenticated:
@@ -62,7 +33,7 @@ def registerPage(request):
             username = form.cleaned_data.get('username')
             form.save()
             user = Account.objects.get(username=username)
-            send_activation_email(request, user)
+            send_activation_email.delay(user.pk)
             messages.success(request, username + _(', please verify your email and activate your account!'))
             return redirect('login')
         else:
@@ -79,7 +50,7 @@ def loginPage(request):
         password = request.POST.get('password1')
         user = authenticate(request, username=username, password=password)
         if user and not user.is_email_verified:
-            messages.error(request, _('Email is not verified. Please verify your email. Email not received? Check spam or '))
+            messages.error(request, _('Email is not verified. Please verify your email.'))
             context = {'form': form}
             return render(request, 'accounts/login.html', context)
         if user is not None:
@@ -122,7 +93,7 @@ def get_new_activation_link(request):
         except Exception as e:
             user = None
         if user is not None:
-            send_activation_email(request, user)
+            send_activation_email.delay(user.pk)
         messages.success(request, _('You will receive a new activation link if there is an account associated with this email.'))
         return redirect('login')
     context = {'form': form}
@@ -137,7 +108,7 @@ def request_reset_password(request):
         except Exception as e:
             user = None
         if user is not None:
-            send_reset_password_email(request, user)
+            send_reset_password_email.delay(user.pk)
         messages.success(request, _('You will receive a link to reset your password if there is an account associated with this email.'))
         return redirect('request_new_password')
     context = {'form': form}

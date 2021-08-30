@@ -90,7 +90,7 @@ class SearchForm(forms.Form):
             ('2', _('Used'))
         ]
     seller_id_list = Product.objects.values('seller').distinct('seller')
-    sellers = [('0', 'Choose seller...')]
+    sellers = [('0', _('Choose seller...'))]
     for seller_id in seller_id_list:
         id = seller_id['seller']
         sellers.append((id, Account.objects.get(pk=id)))
