@@ -201,6 +201,13 @@ SITE_ID = 1
 
 STATIC_ROOT = os.path.join(BASE_DIR,  'static')
 
+# location where you will store your static files
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,'project_name/static')
+]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -209,8 +216,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-MEDIA_URL = '/img/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/img')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # ISO 8601 datetime format to accept html5 datetime input values
 DATETIME_INPUT_FORMATS += ["%Y-%m-%dT%H:%M:%S", "%Y-%m-%dT%H:%M", "%d %B %Y at %I:%M %p"]
