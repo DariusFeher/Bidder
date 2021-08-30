@@ -138,4 +138,3 @@ def reset_password(request, uidb64, token):
         form = ResetPasswordForm(user=request.user)
     context = {'form': form}
     return render(request, 'accounts/reset_password_confirm.html', context)
-    

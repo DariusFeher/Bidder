@@ -9,11 +9,12 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
 import os
 from pathlib import Path
 
-from django.conf.global_settings import DATETIME_INPUT_FORMATS, TIME_INPUT_FORMATS
+import dj_database_url
+from django.conf.global_settings import (DATETIME_INPUT_FORMATS,
+                                         TIME_INPUT_FORMATS)
 from django.conf.locale.ro.formats import DECIMAL_SEPARATOR, THOUSAND_SEPARATOR
 from django.utils.translation import gettext
 
@@ -33,7 +34,7 @@ SECRET_KEY = 'django-insecure-n@dc(1tx1zg^e2m@t8ue65z3hr5mw*i+!srg-wz)x%r&gu1id2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['bidnbuy.herokuapp.com']
 
 # Application definition
 
@@ -71,6 +72,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -226,3 +228,9 @@ CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
+
+#  Add configuration for static files storage using whitenoise
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+prod_db  =  dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(prod_db)
