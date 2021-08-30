@@ -16,7 +16,6 @@ import dj_database_url
 from django.conf.global_settings import (DATETIME_INPUT_FORMATS,
                                          TIME_INPUT_FORMATS)
 from django.conf.locale.ro.formats import DECIMAL_SEPARATOR, THOUSAND_SEPARATOR
-from django.utils.translation import gettext
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,10 +28,10 @@ SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-n@dc(1tx1zg^e2m@t8ue65z3hr5mw*i+!srg-wz)x%r&gu1id2'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['bidnbuy.herokuapp.com']
 
