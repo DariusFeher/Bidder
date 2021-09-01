@@ -28,14 +28,14 @@ SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = "django-insecure-n@dc(1tx1zg^e2m@t8ue65z3hr5mw*i+!srg-wz)x%r&gu1id2"
 # print(SECRET_KEY)
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["ec2-54-174-6-28.compute-1.amazonaws.com"]
 
 # Application definition
 
@@ -129,9 +129,9 @@ DATABASES = {
 
         'NAME': 'BidAndBuy',
 
-        'USER': 'postgres',
+        'USER': '',
 
-        'PASSWORD': 'adminpass',
+        'PASSWORD': '',
 
         'HOST': 'localhost',
 
@@ -194,11 +194,17 @@ EMAIL_PORT = 587
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
 STATIC_URL = '/static/'
 
 SITE_ID = 1
 
-STATIC_ROOT = os.path.join(BASE_DIR,  'static')
+STATIC_ROOT = os.path.join(BASE_DIR,  'staticfiles')
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static'),
+)
 
 MEDIA_URL = '/img/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/img')
