@@ -91,14 +91,14 @@ class SearchForm(forms.Form):
         ]
     seller_id_list = Product.objects.values('seller').distinct('seller')
     sellers = [('0', _('Choose seller...'))]
-    for seller_id in seller_id_list:
-        id = seller_id['seller']
-        sellers.append((id, Account.objects.get(pk=id)))
+    # for seller_id in seller_id_list:
+    #     id = seller_id['seller']
+    #     sellers.append((id, Account.objects.get(pk=id)))
     
     location_places_list = Product.objects.values('location').distinct('location')
     locations = []
-    for nr, location_place in enumerate(location_places_list):
-        locations.append((nr + 1, location_place['location'].place))
+    # for nr, location_place in enumerate(location_places_list):
+    #     locations.append((nr + 1, location_place['location'].place))
     locations.sort(key=lambda x:x[1])
     search_term = forms.CharField(required=False, label=_('Search term...'))
     seller = forms.ChoiceField(choices=sellers, label=_('Seller'), required=False)

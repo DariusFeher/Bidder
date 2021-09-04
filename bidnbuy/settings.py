@@ -35,7 +35,7 @@ SECRET_KEY = "django-insecure-n@dc(1tx1zg^e2m@t8ue65z3hr5mw*i+!srg-wz)x%r&gu1id2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["ec2-54-174-6-28.compute-1.amazonaws.com"]
+ALLOWED_HOSTS = ["bidderapp-env.eba-mbsjpv3v.us-east-1.elasticbeanstalk.com"]
 
 # Application definition
 
@@ -129,9 +129,9 @@ DATABASES = {
 
         'NAME': 'BidAndBuy',
 
-        'USER': '',
+        'USER': 'postgres',
 
-        'PASSWORD': '',
+        'PASSWORD': 'adminpass',
 
         'HOST': 'localhost',
 
