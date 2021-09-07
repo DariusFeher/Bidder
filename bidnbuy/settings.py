@@ -205,13 +205,13 @@ EMAIL_PORT = 587
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 
-SITE_ID = 1
+SITE_ID = 4
 
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
-MEDIA_URL = 'static/img/'
+MEDIA_URL = '/img/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/img')
 
 
