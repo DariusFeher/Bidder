@@ -205,7 +205,7 @@ EMAIL_PORT = 587
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 
-SITE_ID = 2
+SITE_ID = 1
 
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
@@ -236,7 +236,7 @@ PLACES_MAP_OPTIONS='{"center": { "lat": 44.439663, "lng": 26.096306 }, "zoom": 1
 PLACES_MARKER_OPTIONS='{"draggable": true}'
 
 
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+#CELERY_BROKER_URL = 'redis://localhost:6379'
+#CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
