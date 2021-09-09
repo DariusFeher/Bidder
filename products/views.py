@@ -1,5 +1,6 @@
 import datetime
 from datetime import timedelta
+from math import prod
 
 import pytz
 from auctions.forms import AuctionForm
@@ -21,7 +22,7 @@ from users.models import Account
 from .forms import ProductForm, SearchForm
 from .models import Product
 from .tasks import send_bidding_confirmation, send_outbidding_email
-from .utils import handle_file, handle_uploaded_file
+from .utils import handle_file
 
 # Create your views here.
 conditions = {
@@ -98,7 +99,6 @@ def editProduct(request, pk):
             picture4 = handle_file(form.cleaned_data['picture4'], product.picture4, form.cleaned_data['delete4'])
             picture5 = handle_file(form.cleaned_data['picture5'], product.picture5, form.cleaned_data['delete5'])
             picture6 = handle_file(form.cleaned_data['picture6'], product.picture6, form.cleaned_data['delete6'])
-
             if (picture2 is None or picture3 is None or picture4 is None or
                 picture5 is None or picture6 is None):
                 pictures_changes = True
@@ -120,24 +120,25 @@ def editProduct(request, pk):
                 picture6 != product.picture6 or
                 pictures_changes):
                 
-                Product.objects.filter(pk=pk).update(
-                        title=form.cleaned_data['title'],
-                        description=form.cleaned_data['description'],
-                        condition=form.cleaned_data['condition'],
-                        starting_price=form.cleaned_data['starting_price'],
-                        currency=form.cleaned_data['currency'],
-                        phone_number=form.cleaned_data['phone_number'],
-                        location=location,
-                        end_date=date,
-                        picture1=picture1,
-                        picture2=picture2,
-                        picture3=picture3,
-                        picture4=picture4,
-                        picture5=picture5,
-                        picture6=picture6,
-                        seller=request.user,
-                        last_updated=datetime.datetime.now(pytz.timezone('Europe/Bucharest'))
-                    )
+                product = Product.objects.get(pk=pk)
+                product.title = form.cleaned_data['title']
+                product.description = description=form.cleaned_data['description']
+                product.condition=form.cleaned_data['condition']
+                product.starting_price=form.cleaned_data['starting_price']
+                product.currency=form.cleaned_data['currency']
+                product.phone_number=form.cleaned_data['phone_number']
+                product.location=location
+                product.end_date=date
+                product.picture1=picture1
+                product.picture2=picture2
+                product.picture3=picture3
+                product.picture4=picture4
+                product.picture5=picture5
+                product.picture6=picture6
+                product.seller=request.user
+                product.last_updated=datetime.datetime.now(pytz.timezone('Europe/Bucharest'))
+                product.save()
+
             detail_page = product.get_detail_url()
             return redirect(detail_page)
         else:

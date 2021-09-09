@@ -19,7 +19,8 @@
             if (id != "1") {
                 preview_img += '<div class="image-cancel" data-no="'+ id + '" onclick="loadPlaceholder(' + id + ')"><label class="waves-effect light btn-small text-uppercase btn-outline red" style="width: 90%">{% trans "Delete" %}</label></div>';
             }
-            preview_img += '<div class="image-zone"><img id="picture' + id + '" src="' + url + '"></div>' +
+        
+            preview_img += '<div class="image-zone"><img id="picture' + id + '" src="'+ url +'"></div>' +
                         '<div class="tools-edit-image">' +
                         '<label for="id_picture' + id + '" class="waves-effect light btn-small text-uppercase btn-outline" style="width: 90%">{% trans "Upload" %}</label>' +
                         '<input type="file" name="picture' + id + '" accept="image/*" id="id_picture'+ id + '"  onchange="loadFile(event, ' + id + ')"></input>' +
@@ -96,7 +97,7 @@
                                 </script>
                             {% else %}
                                 <script>
-                                    addPicture("1", "/img/placeholder.png");
+                                    addPicture("1", "{% static 'media/placeholder.png' %}");
                                 </script>
                             {% endif %}
                             {% if object.picture2 %}
@@ -105,7 +106,7 @@
                                 </script>
                             {% else %}
                                 <script>
-                                    addPicture("2", "/img/placeholder.png");
+                                    addPicture("2","{% static 'media/placeholder.png' %}");
                                 </script>
                             {% endif %}
                             {% if object.picture3 %}
@@ -114,7 +115,7 @@
                                 </script>
                             {% else %}
                                 <script>
-                                    addPicture("3", "/img/placeholder.png");
+                                    addPicture("3", "{% static 'media/placeholder.png' %}");
                                 </script>
                             {% endif %}
                             {% if object.picture4 %}
@@ -123,7 +124,7 @@
                                 </script>
                             {% else %}
                                 <script>
-                                    addPicture("4", "/img/placeholder.png");
+                                    addPicture("4", "{% static 'media/placeholder.png' %}");
                                 </script>
                             {% endif %}
                             {% if object.picture5 %}
@@ -132,7 +133,7 @@
                                 </script>
                             {% else %}
                                 <script>
-                                    addPicture("5", "/img/placeholder.png");
+                                    addPicture("5", "{% static 'media/placeholder.png' %}");
                                 </script>
                             {% endif %}
                             {% if object.picture6 %}
@@ -141,7 +142,7 @@
                                 </script>
                             {% else %}
                                 <script>
-                                    addPicture("6", "/img/placeholder.png");
+                                    addPicture("6", "{% static 'media/placeholder.png' %}");
                                 </script>
                             {% endif %}              
                         </div>

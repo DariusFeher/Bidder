@@ -73,6 +73,9 @@ INSTALLED_APPS = [
 
     # Task scheduler
     'django_celery_beat',
+
+    # Storage
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -207,13 +210,13 @@ EMAIL_PORT = 587
 
 SITE_ID = 4
 
-STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = "https://%s/%s/" % (os.environ.get('AWS_S3_ENDPOINT_URL'), os.environ.get('AWS_LOCATION'))
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles-cdn")
 
-MEDIA_URL = '/img/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/img')
+from .cdn.conf import *  #noqa
 
+# https://bidder-django.fra1.digitaloceanspaces.com
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

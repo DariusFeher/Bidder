@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load static %}
 <body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <ul id="dropdown-user" class="dropdown-content">
@@ -21,7 +22,9 @@
                 {% if language.code == LANGUAGE_CODE %} &#10003;
                 
                 {% endif %}
-                <img src="/static/img/flags/{{ language.code }}.png">
+                {% with 'img/flags/'|add:language.code|add:'.png' as image_static %}
+                <img src="{% static image_static %}">
+                {% endwith %}
                 {{ language.name_translated }}
             </button>
         </li>
@@ -34,8 +37,8 @@
         <a href="/" class="brand-logo" style="font-family: 'Lobster', cursive; margin-left: 1%; color: black;"> Bidder</a>
         <ul class="right hide-on-med-and-down">
             {% if request.user.is_authenticated %}
-                <li style="height: 100%;"><a href="/products/new" class="waves-effect waves-light btn teal" style="top:25%; color: white;">{% trans "CREATE NEW AD" %}</a></li>
-                <li style="height: 100%;"><a href="/products/mywishlist" style="color: black;">{% trans "Wishlist" %}</a></li>
+                <li style="height: 100%;"><a href="/products/new/" class="waves-effect waves-light btn teal" style="top:25%; color: white;">{% trans "CREATE NEW AD" %}</a></li>
+                <li style="height: 100%;"><a href="/products/mywishlist/" style="color: black;">{% trans "Wishlist" %}</a></li>
             {% endif %}
             <!-- Dropdown Trigger -->
             <li><a class="dropdown-trigger" href="#!" data-target="dropdown-language" style="color: #000;">{% trans 'Language' %}<i class="material-icons right">arrow_drop_down</i></a></li>
