@@ -195,7 +195,7 @@
         };
         var loadPlaceholder = function(no) {
             var output = document.getElementById('picture' + no);
-            output.src = '/img/placeholder.png';
+            output.src = "{% static 'media/placeholder.png' %}";
             $('#id_delete' + no).prop('checked', true);
             output.onload = function() {
             URL.revokeObjectURL(output.src) // free memory
