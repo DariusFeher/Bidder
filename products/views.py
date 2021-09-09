@@ -180,11 +180,11 @@ def detailPage(request, pk):
             product = get_object_or_404(Product, pk=pk)
             context = {'object': product}
             user = Account.objects.get(email=request.user)
-            send_bidding_confirmation.delay(request.LANGUAGE_CODE, user.pk, product.pk)
+            send_bidding_confirmation(request.LANGUAGE_CODE, user.pk, product.pk)
             messages.success(request,  _('Your bid has been recorded.'))
             last_auction = Auction.objects.filter(product=product).order_by('-bid_time')
             if len(last_auction) >= 2 and last_auction[1].bidder.email != request.user.email:
-                send_outbidding_email.delay(request.LANGUAGE_CODE, product.pk, last_auction[1].pk)
+                send_outbidding_email(request.LANGUAGE_CODE, product.pk, last_auction[1].pk)
         else:
             if timezone.now() + timedelta(hours=3) > product.end_date:
                 messages.error(request,  _('Auction has finished!'))

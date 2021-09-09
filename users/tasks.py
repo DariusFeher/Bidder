@@ -1,4 +1,4 @@
-from celery import shared_task
+from background_task import background
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.contrib.sites.shortcuts import get_current_site
@@ -11,7 +11,7 @@ from django.utils.encoding import (DjangoUnicodeDecodeError, force_bytes,
 from .utils import generate_token
 from .models import Account
 
-@shared_task
+@background
 def send_activation_email(user_pk):
     user = Account.objects.get(pk=user_pk)
     current_site = Site.objects.get_current().domain
@@ -29,7 +29,7 @@ def send_activation_email(user_pk):
     email.send()
     return "Activation email sent."
 
-@shared_task
+@background
 def send_reset_password_email(user_pk):
     user = Account.objects.get(pk=user_pk)
     current_site = Site.objects.get_current().domain

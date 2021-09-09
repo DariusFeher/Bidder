@@ -1,4 +1,6 @@
 import datetime
+from tabnanny import verbose
+from timeit import repeat
 import favourites
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -14,6 +16,8 @@ from django.db.models import Q
 from users.models import Account
 from itertools import chain
 from .utils import filter_products
+from .tasks import send_email_task
+from background_task.models import Task
 # Create your views here.
 
 sellers = [      
@@ -23,6 +27,8 @@ sellers = [
 
 @login_required(login_url='login')
 def homePage(request):
+    if len(Task.objects.filter(verbose_name="send_email_task")) == 0:
+        send_email_task(repeat=60, verbose_name="send_email_task")
     if request.method == 'GET':
         searchForm = SearchForm()
         products = Product.objects.all()

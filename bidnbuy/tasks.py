@@ -1,4 +1,5 @@
 from datetime import timedelta
+from timeit import repeat
 from django.core.mail import EmailMessage
 
 from auctions.models import Auction
@@ -11,9 +12,9 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from products.models import Product
 
-from celery import shared_task
+from background_task import background
 
-@shared_task
+@background()
 def send_email_task():
     products = Product.objects.all()
     current_site = Site.objects.get_current().domain

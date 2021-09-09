@@ -1,8 +1,9 @@
+from timeit import repeat
 from users.models import Account
 from .models import Product
 from auctions.models import Auction
 from auctions.utils import get_no_bidders_product, get_no_bids_product
-from celery import shared_task
+from background_task import background
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.mail import EmailMessage
@@ -12,7 +13,7 @@ from django.utils import translation
 from django.utils.translation import get_language
 
 
-@shared_task
+@background
 def send_bidding_confirmation(language, pk_user, pk_product):
     translation.activate(language)
     user = Account.objects.get(pk=pk_user)
@@ -36,7 +37,7 @@ def send_bidding_confirmation(language, pk_user, pk_product):
     email.send()
     return "Bidding confirmation email sent"
 
-@shared_task
+@background
 def send_outbidding_email(language, pk_product, pk_last_auction):
     product = Product.objects.get(pk=pk_product)
     translation.activate(language)

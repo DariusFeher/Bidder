@@ -76,6 +76,7 @@ INSTALLED_APPS = [
 
     # Storage
     'storages',
+    'background_task',
 ]
 
 MIDDLEWARE = [
