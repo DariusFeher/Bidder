@@ -30,28 +30,17 @@
 
     <!-- Custom js & css -->
     <link rel="stylesheet" href="{% static 'style.css' %}">
-    <link rel="stylesheet" href="{% static 'background.css' %}">
+    {% comment %} <link rel="stylesheet" href="{% static 'background.css' %}"> {% endcomment %}
 
     <title>Bidder | {% block title %}{% endblock title %}</title>
   </head>
   <body  style="background-color: #3f6068;">
     {% include 'navbar.html' %}
-    <canvas id="canvas"></canvas>
     <div class="mt-3 mb-3">
         {% block content %}
         {% endblock content %}
     </div>
-    <div id="canvas">
-      <div class='light x1'></div>
-      <div class='light x2'></div>
-      <div class='light x3'></div>
-      <div class='light x4'></div>
-      <div class='light x5'></div>
-      <div class='light x6'></div>
-      <div class='light x7'></div>
-      <div class='light x8'></div>
-      <div class='light x9'></div>
-    </div>
+    
     <!-- Bootstrap js -->
     {% block javascript %}
     <script src="{% static 'app.js' %}"></script>
@@ -64,7 +53,24 @@
       integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
       crossorigin="anonymous"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        change_dims();
+      });
+      $(window).resize(change_dims);
+      function change_dims() {
+              var c = document.getElementById("canvas");
+              var box = c.getBoundingClientRect();
+              var body = document.body;
+              var html = document.documentElement;
+
+              c.width = box.width;
+              c.height = Math.max( body.scrollHeight, body.offsetHeight, 
+                              html.clientHeight, html.scrollHeight, html.offsetHeight );
+              document.getElementById("canvas").style.height = c.height + "px";
+      }
+    </script>
    {% endblock javascript %}
   </body>
 </html>

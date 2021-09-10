@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <link rel="stylesheet" href="{% static 'background.css' %}">
     <script src="{% static 'app.js' %}"></script>
-    
 </head>
 <body style="background-color: #3f6068;">
     {% for message in messages %}
@@ -190,7 +189,7 @@
                 "min" : "1",
             });
             $('.datepicker').datepicker({'format': 'yyyy-mm-dd'});
-            
+            change_dims();
         });
         $(function(){
             if ("{{title}}" != "Your products" && "{{title}}" != "Anunturile tale") {
@@ -211,6 +210,18 @@
         });
         function form_submit() {
             document.getElementById("id_search_form").submit();
+        }
+        $(window).resize(change_dims);
+        function change_dims() {
+            var c = document.getElementById("canvas");
+            var box = c.getBoundingClientRect();
+            var body = document.body;
+            var html = document.documentElement;
+
+            c.width = box.width;
+            c.height = Math.max( body.scrollHeight, body.offsetHeight, 
+                            html.clientHeight, html.scrollHeight, html.offsetHeight );
+            document.getElementById("canvas").style.height = c.height + "px";
         }
         function AddOrRemoveFavourite(pk, ptitle) {
             fav_icon = document.getElementById("fav_icon" + pk);
