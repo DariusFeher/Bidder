@@ -30,7 +30,7 @@
 
     <!-- Custom js & css -->
     <link rel="stylesheet" href="{% static 'style.css' %}">
-    {% comment %} <link rel="stylesheet" href="{% static 'background.css' %}"> {% endcomment %}
+    <link rel="stylesheet" href="{% static 'background.css' %}">
 
     <title>Bidder | {% block title %}{% endblock title %}</title>
   </head>
@@ -40,7 +40,17 @@
         {% block content %}
         {% endblock content %}
     </div>
-    
+    <div id="canvas">
+      <div class='light_bck x1'></div>
+      <div class='light_bck x2'></div>
+      <div class='light_bck x3'></div>
+      <div class='light_bck x4'></div>
+      <div class='light_bck x5'></div>
+      <div class='light_bck x6'></div>
+      <div class='light_bck x7'></div>
+      <div class='light_bck x8'></div>
+      <div class='light_bck x9'></div>
+    </div>
     <!-- Bootstrap js -->
     {% block javascript %}
     <script src="{% static 'app.js' %}"></script>
