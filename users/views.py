@@ -4,12 +4,8 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import (authenticate, login, logout,
                                  update_session_auth_hash)
-from django.contrib.auth.decorators import login_required
-from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import NON_FIELD_ERRORS
-from django.core.mail import EmailMessage
 from django.shortcuts import redirect, render
-from django.template.loader import render_to_string
 from django.utils.encoding import (DjangoUnicodeDecodeError, force_bytes,
                                    force_str, force_text)
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
@@ -33,7 +29,7 @@ def registerPage(request):
             username = form.cleaned_data.get('username')
             form.save()
             user = Account.objects.get(username=username)
-            send_activation_email.delay(user.pk)
+            send_activation_email(user.pk)
             messages.success(request, username + _(', please verify your email and activate your account!'))
             return redirect('login')
         else:
@@ -93,7 +89,7 @@ def get_new_activation_link(request):
         except Exception as e:
             user = None
         if user is not None:
-            send_activation_email.delay(user.pk)
+            send_activation_email(user.pk)
         messages.success(request, _('You will receive a new activation link if there is an account associated with this email.'))
         return redirect('login')
     context = {'form': form}
@@ -108,9 +104,9 @@ def request_reset_password(request):
         except Exception as e:
             user = None
         if user is not None:
-            send_reset_password_email.delay(user.pk)
+            send_reset_password_email(user.pk)
         messages.success(request, _('You will receive a link to reset your password if there is an account associated with this email.'))
-        return redirect('request_new_password')
+        return redirect('/')
     context = {'form': form}
     return render(request, 'accounts/reset_password_request.html', context)
 

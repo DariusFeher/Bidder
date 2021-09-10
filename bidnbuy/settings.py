@@ -209,7 +209,7 @@ EMAIL_PORT = 587
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 
-SITE_ID = 4
+SITE_ID = 1
 
 STATIC_URL = "https://%s/%s/" % (os.environ.get('AWS_S3_ENDPOINT_URL'), os.environ.get('AWS_LOCATION'))
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
@@ -238,9 +238,3 @@ PLACES_MAPS_API_KEY='AIzaSyBXVUYyn1KJnqaN5oE5dpaL9eVHFo9gLXg'
 PLACES_MAP_WIDGET_HEIGHT=480
 PLACES_MAP_OPTIONS='{"center": { "lat": 44.439663, "lng": 26.096306 }, "zoom": 10, "maxZoom": 10}'
 PLACES_MARKER_OPTIONS='{"draggable": true}'
-
-
-#CELERY_BROKER_URL = 'redis://localhost:6379'
-#CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'

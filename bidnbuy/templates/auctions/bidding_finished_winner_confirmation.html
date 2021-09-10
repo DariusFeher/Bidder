@@ -27,48 +27,47 @@
                 <div class="card">
                     <div class="card-content">
                         <span class="card-title">{% trans "Seller Information" %}</span>
-                        <h5 style="display: inline;"><i class="large material-icons" style="display: inline; font-size: xx-large; margin-right: 3%; color: teal; vertical-align: bottom; margin-left: 2%;">account_circle</i> {{product.seller.email}} </h5>
-                        <h5><span class="large material-icons" style="font-size: xx-large; margin-right: 3%; color: teal; vertical-align: bottom; margin-left: 2%;">phone</span> {{product.phone_number}} </h5>
+                        <h6 style="display: inline;"><i class="large material-icons" style="display: inline; font-size: xx-large; margin-right: 3%; color: teal; vertical-align: bottom; margin-left: 2%;">account_circle</i> {{product.seller.email}} </h6>
+                        <h6><span class="large material-icons" style="font-size: xx-large; margin-right: 3%; color: teal; vertical-align: bottom; margin-left: 2%;">phone</span> {{product.phone_number}} </h6>
                     </div>
                 </div>
             </div>
             </div>
             <div style="width: 45%; display: inline-block; vertical-align: top; margin-left: 2%;">
                 <div class="col s12 m7">
-                    <div class="card horizontal">
+                    <div class="card">
                         <div class="card-image">
                             <img src="{{product.picture1.url}}">
                         </div>
-                        <div class="card-stacked">
-                            <div class="card-content">
-                                <h5 style="font-weight: bold; padding-top: 0%; margin-top: 0%; color: #3f6068;"> {{product.title}}</h5>
-                                <div style="margin-top: 3%; margin-bottom: 3%;">
-                                    <h6 style="font-weight: bold; display: inline;">{% trans "Last bid"%}: </h6>
-                                    <h6 style="display: inline;">{{product.last_bid}}</h6>
-                                    <h6 style="display: inline;">
-                                        {% if product.currency == '1' %}
-                                            {% trans "LEI" %}
-                                        {% elif product.currency == '2' %}
-                                            {% trans "USD (US$)" %}
-                                        {% elif product.currency == '3' %}
-                                            {% trans "EUR (€)" %}
-                                        {% elif product.currency == '4' %}
-                                            {% trans "GBP (£)" %}
-                                        {% endif %}
-                                    </h6>
-                                </div>
-                                <div style="margin-top: 3%; margin-bottom: 3%;">
-                                    <h6 style="font-weight: bold; display: inline;">{% trans "Ends in: Auction finished!" %}</h6>
-                                </div>
-                                <h5 style="font-weight: bold; padding-top: 0%; margin-top: 0%; color: #3f6068;"> {% trans "Who else was interested?" %}</h5>
-                                <h6><span class="material-icons-outlined material-icons">task_alt</span> {{bidders}} {% trans "bidder(s)" %}</h6>
-                                <h6><span class="material-icons-outlined material-icons">task_alt</span> {{bids}} {% trans "bid(s)" %}</h6>
+                        <div class="card-content">
+                            <h5 style="font-weight: bold; padding-top: 0%; margin-top: 0%; color: #3f6068;"> {{product.title}}</h5>
+                            <div style="margin-top: 3%; margin-bottom: 3%;">
+                                <h6 style="font-weight: bold; display: inline;">{% trans "Last bid"%}: </h6>
+                                <h6 style="display: inline;">{{product.last_bid}}</h6>
+                                <h6 style="display: inline;">
+                                    {% if product.currency == '1' %}
+                                        {% trans "LEI" %}
+                                    {% elif product.currency == '2' %}
+                                        {% trans "USD (US$)" %}
+                                    {% elif product.currency == '3' %}
+                                        {% trans "EUR (€)" %}
+                                    {% elif product.currency == '4' %}
+                                        {% trans "GBP (£)" %}
+                                    {% endif %}
+                                </h6>
                             </div>
-                            <div class="card-action">
-                                <a href="http://{{domain}}{{product.get_detail_url}}">{% trans "See the product" %}</a>
+                            <div style="margin-top: 3%; margin-bottom: 3%;">
+                                <h6 style="font-weight: bold; display: inline;">{% trans "Ends in: Auction finished!" %}</h6>
                             </div>
+                            <h5 style="font-weight: bold; padding-top: 0%; margin-top: 0%; color: #3f6068;"> {% trans "Who else was interested?" %}</h5>
+                            <h6><span class="material-icons-outlined material-icons">task_alt</span> {{bidders}} {% trans "bidder(s)" %}</h6>
+                            <h6><span class="material-icons-outlined material-icons">task_alt</span> {{bids}} {% trans "bid(s)" %}</h6>
+                        </div>
+                        <div class="card-action">
+                            <a href="https://{{domain}}{{product.get_detail_url}}">{% trans "See the product" %}</a>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>   
