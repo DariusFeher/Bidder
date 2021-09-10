@@ -158,7 +158,6 @@ def deleteProduct(request, pk):
     messages.success(request, _("Product ") + product.title + _(" deleted successfully"))
     return redirect('/')
 
-
 @login_required(login_url='/login/')
 def detailPage(request, pk):
     product = get_object_or_404(Product, pk=pk)

@@ -89,7 +89,7 @@ def get_new_activation_link(request):
         except Exception as e:
             user = None
         if user is not None:
-            send_activation_email(user.pk)
+            send_activation_email(request.LANGUAGE_CODE, user.pk)
         messages.success(request, _('You will receive a new activation link if there is an account associated with this email.'))
         return redirect('login')
     context = {'form': form}
@@ -104,7 +104,7 @@ def request_reset_password(request):
         except Exception as e:
             user = None
         if user is not None:
-            send_reset_password_email(user.pk)
+            send_reset_password_email(request.LANGUAGE_CODE, user.pk)
         messages.success(request, _('You will receive a link to reset your password if there is an account associated with this email.'))
         return redirect('/')
     context = {'form': form}
