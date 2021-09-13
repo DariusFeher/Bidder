@@ -211,7 +211,12 @@
         function form_submit() {
             document.getElementById("id_search_form").submit();
         }
-        $(window).resize(change_dims);
+        var TO = false;
+        $(window).resize(function(){
+        if(TO !== false)
+            clearTimeout(TO);
+            TO = setTimeout(change_dims, 300);
+        });
         function change_dims() {
             var c = document.getElementById("canvas");
             var box = c.getBoundingClientRect();
