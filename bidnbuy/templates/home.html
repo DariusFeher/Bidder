@@ -4,6 +4,7 @@
 {% load materializecss %}
 {% block content %}
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bidder | {{page_title}} </title>
     <!-- Compiled and minified CSS -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -110,7 +111,7 @@
                     } else {
                         currency = 'GBP (£)';
                     }
-                    card = '<div class="col l4 m4 s12">' +
+                    card = '<div class="col l4 m12 s12">' +
                                 '<div class="card sticky-action">' +
                                     '<div class="card-image">' +
                                         '<img src="{{product.picture1.url}}" class="materialboxed" style="width: 100%;  height: 15vw; object-fit: cover;">' +

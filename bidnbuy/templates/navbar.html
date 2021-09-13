@@ -31,10 +31,40 @@
         {% endfor %}
     </form>
 </ul>
+<ul id="dropdown-user2" class="dropdown-content">
+    {% if request.user.is_authenticated %}
+        <li><a href="/products/myproducts/">{% trans "My ads" %}</a></li>
+        <li><a href="{% url 'logout' %}">{% trans 'Logout' %}</a></li>
+    {% endif %}
+</ul>
+<ul id="dropdown-language2" class="dropdown-content">
+    <form action="{% url 'set_language' %}" method="post" id="lang_form">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ redirect_to }}" />
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% get_language_info_list for LANGUAGES as languages %}
+        {% for language in languages %}
+        <li>
+            <button type="submit" name="language" value="{{ language.code }}" class="{% if language.code == LANGUAGE_CODE %} selected{% else%} demo-text-black{% endif %} dropdown-item" style="width:100%; height: 50px;">
+                {% if language.code == LANGUAGE_CODE %} &#10003;
+                
+                {% endif %}
+                {% with 'img/flags/'|add:language.code|add:'.png' as image_static %}
+                <img src="{% static image_static %}">
+                {% endwith %}
+                {{ language.name_translated }}
+            </button>
+        </li>
+        {% endfor %}
+    </form>
+</ul>
 
 <nav class="white">
-   <div class="nav-wrapper">
+    <div class="nav-wrapper">
         <a href="/" class="brand-logo" style="font-family: 'Lobster', cursive; margin-left: 1%; color: black;"> Bidder</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons" style="color: black;">menu</i></a>
+
         <ul class="right hide-on-med-and-down">
             {% if request.user.is_authenticated %}
                 <li style="height: 100%;"><a href="/products/new/" class="waves-effect waves-light btn teal" style="top:25%; color: white;">{% trans "CREATE NEW AD" %}</a></li>
@@ -48,9 +78,22 @@
         </ul>
     </div>
 </nav>
+ <ul class="sidenav" id="mobile-demo">
+    {% if request.user.is_authenticated %}
+        <li><a class="dropdown-trigger" href="#!" data-target="dropdown-user2" style="color: #000;">{{ request.user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
+    {% endif %}
+    <li><a class="dropdown-trigger" href="#!" data-target="dropdown-language2" style="color: #000;">{% trans 'Language' %}<i class="material-icons right">arrow_drop_down</i></a></li>
+
+    {% if request.user.is_authenticated %}
+        <li><a href="/products/mywishlist/" style="color: black;">{% trans "Wishlist" %}</a></li>
+        <li><a href="/products/new/" class="waves-effect waves-light btn teal" style="top:25%; color: white;">{% trans "CREATE NEW AD" %}</a></li>
+    {% endif %}
+</ul>
+
 <script>
     $(document).ready(function(){
         $(".dropdown-trigger").dropdown();
+        $('.sidenav').sidenav();
     });
 </script>
 </body>
